@@ -15,4 +15,4 @@ wheels/
 .idea/
 .env.*.local
 *.env
-src/repomind/memory/memory.db
+document_rag\memory\memory.db

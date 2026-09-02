@@ -25,7 +25,7 @@ QDRANT_API_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3MiOiJtIiwic3ViamV
 
 # Config (move to pydantic-settings later if you want these env-driven)
 DEFAULT_BATCH_SIZE = 100
-DEFAULT_TOP_K = 5
+DEFAULT_TOP_K = 15
 SPARSE_MODEL_NAME = "Qdrant/bm25"
 
 logger = logging.getLogger(__name__)

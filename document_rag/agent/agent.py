@@ -50,13 +50,13 @@ if __name__ == "__main__":
                 "messages": [
                     {
                         "role": "user",
-                        "content": "Search my documents",
+                        "content": "what is seaborn explain in short ",
                     }
                 ]
             },
             config={
                 "configurable": {
-                    "thread_id": "test-123",
+                    "thread_id": "dddf-123",
                 }
             },
         )
