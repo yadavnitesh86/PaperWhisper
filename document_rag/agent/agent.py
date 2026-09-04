@@ -1,24 +1,42 @@
+import asyncio
 from langchain.agents import create_agent
-
 from document_rag.vector_store.factor.factor import get_llm
+from langchain.agents.middleware import SummarizationMiddleware
 
-system_prompt = """ You are a document QA agent. Use the search_documents tool as your only source of factual information.
+
+system_prompt = """You are a document QA agent. Use the search_documents tool as your only source of factual information.
 
 Always search the documents before answering.
-Answer only from retrieved content.
-If the answer isn't found, say you couldn't find it in the documents.
-Never guess or use outside knowledge.
-Use returned metadata such as source/page when relevant. """
 
-def get_agent(tools,checkpointer):
+Answer only from retrieved content.
+
+If the answer isn't found, say you couldn't find it in the documents.
+
+Never guess or use outside knowledge.
+
+Use returned metadata such as source/page when relevant.
+"""
+
+
+def get_agent(tools, checkpointer):
+
     llm = get_llm()
-    return create_agent(model = llm,
+
+    return create_agent(
+        model=llm,
         tools=tools,
         system_prompt=system_prompt,
-        checkpointer=checkpointer
+        checkpointer=checkpointer,
+        middleware=[SummarizationMiddleware(model=llm,
+        trigger=("tokens", 12000),
+        keep=("messages", 10),
+    )
+]
     )
 
-if __name__ == "__main__":
+
+async def main():
+
     print("reached main\n")
 
     USER_ID = "yadavnitesh86"
@@ -29,6 +47,7 @@ if __name__ == "__main__":
 
     print("reached till tool")
 
+    # Your retriever/tool factory remains synchronous
     tool = create_search_tool(
         user_id=USER_ID,
         collection_name=COLLECTION_NAME,
@@ -38,19 +57,19 @@ if __name__ == "__main__":
 
     print("reached till agent\n")
 
-    with get_checkpointer() as checkpointer:
+    async with get_checkpointer() as checkpointer:
 
         agent = get_agent(
             tools=tools,
             checkpointer=checkpointer,
         )
 
-        result = agent.invoke(
+        result = await agent.ainvoke(
             {
                 "messages": [
                     {
                         "role": "user",
-                        "content": "what is seaborn explain in short ",
+                        "content": "what is seaborn explain in short",
                     }
                 ]
             },
@@ -64,3 +83,7 @@ if __name__ == "__main__":
         print(result["messages"][-1].content)
 
     print("success\n")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())

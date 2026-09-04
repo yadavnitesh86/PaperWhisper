@@ -1,0 +1,53 @@
+
+[
+  {
+    "user_id": "yadavnitesh86",
+    "question": "What are the main steps involved in text summarization?",
+    "ground_truth": "No relevant documents should be retrieved for this question."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "What is extractive text summarization?",
+    "ground_truth": "No relevant documents should be retrieved for this question."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "What is abstractive text summarization?",
+    "ground_truth": "No relevant documents should be retrieved for this question."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "What are the advantages and disadvantages of extractive summarization?",
+    "ground_truth": "No relevant documents should be retrieved for this question."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "How does abstractive summarization generate a summary from a text?",
+    "ground_truth": "No relevant documents should be retrieved for this question."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "What is Matplotlib used for in Python?",
+    "ground_truth": "No relevant documents should be retrieved for this question."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "How can a line plot be created using Matplotlib?",
+    "ground_truth": "No relevant documents should be retrieved for this question."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "What is Seaborn and how is it related to Matplotlib?",
+    "ground_truth": "No relevant documents should be retrieved for this question."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "How can a bar chart be created using Matplotlib?",
+    "ground_truth": "No relevant documents should be retrieved for this question."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "What are the advantages of using Seaborn for data visualization?",
+    "ground_truth": "No relevant documents should be retrieved for this question."
+  }
+]

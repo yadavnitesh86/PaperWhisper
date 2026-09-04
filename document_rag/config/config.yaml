@@ -12,4 +12,6 @@ give_llm:
 
 memory :
   db_path : "./document_rag/memory/memory.db"
+  APP_DB_PATH : "./document_rag/memory/api/app.db"
+  UPLOAD_DIR : "./document_rag/uploads"
   

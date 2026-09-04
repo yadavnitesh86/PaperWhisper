@@ -4,9 +4,9 @@ from dotenv import load_dotenv
 import logfire
 import os 
 from pathlib import Path
-from langgraph.checkpoint.sqlite import SqliteSaver
-from contextlib import contextmanager
+from contextlib import asynccontextmanager
 
+from langgraph.checkpoint.sqlite.aio import AsyncSqliteSaver
 
 load_dotenv()
 config = load_config()
@@ -49,14 +49,20 @@ def get_llm():
 
 def get_checkpointer_db_path() -> str:
     db_path = config["memory"]["db_path"]
-    Path(db_path).parent.mkdir(parents=True, exist_ok=True)
+
+    Path(db_path).parent.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
     return db_path
 
-@contextmanager
-def get_checkpointer():
+
+@asynccontextmanager
+async def get_checkpointer():
     db_path = get_checkpointer_db_path()
 
-    with SqliteSaver.from_conn_string(db_path) as checkpointer:
+    async with AsyncSqliteSaver.from_conn_string(db_path) as checkpointer:
         yield checkpointer
 
 if __name__ == "__main__":
