@@ -1,13 +1,25 @@
 import json
 from pathlib import Path
-
-from ragas import EvaluationDataset, SingleTurnSample
+from openai import OpenAI
+from ragas import EvaluationDataset, SingleTurnSample, evaluate
+from ragas.metrics._context_precision import LLMContextPrecisionWithReference
+from ragas.metrics._context_recall import LLMContextRecall
+from ragas.metrics._faithfulness import Faithfulness
+from ragas.metrics._answer_relevance import AnswerRelevancy
+from ragas.metrics._factual_correctness import FactualCorrectness
+from ragas.llms import llm_factory
+from document_rag.vector_store.factor.factor import get_llm , get_dense_ef
+from document_rag.config.config import load_config
+import os
+from dotenv import load_dotenv
+from ragas.run_config import RunConfig
 
 RESULT_FILE = Path(
     "document_rag/evals/evaluation_results.jsonl"
 )
+load_dotenv()
 
-
+config = load_config()
 samples = []
 
 with RESULT_FILE.open("r", encoding="utf-8") as f:
@@ -24,6 +36,41 @@ with RESULT_FILE.open("r", encoding="utf-8") as f:
         samples.append(sample)
 
 
-dataset = EvaluationDataset(samples=samples)
+dataset = EvaluationDataset(samples=samples[20:40])
+client = OpenAI(
+    api_key=os.getenv("OPENAI_API_KEY"),
+    base_url=config["give_llm"]["base_url"],
+    
+    default_headers={
+        "User-Agent": "claude-cli/2.0.0 (external, cli)"
+    }
+)
+# run_config = RunConfig(
+#     max_workers=1,
+#     max_retries=10,
+#     max_wait=60,
+# )
 
-print(f"Loaded {len(samples)} samples")
+evaluator_llm = llm_factory(
+    config["give_llm"]["model"],
+    client=client,
+    max_tokens=15000,
+)
+regas_embeddings = get_dense_ef()
+
+
+if __name__ == "__main__":
+
+    results = evaluate(
+        dataset=dataset,
+        metrics=[Faithfulness(),
+        ],
+        llm=evaluator_llm,
+        \
+        # run_config=run_config,
+    )
+    print("\n=== Individual Results ===")
+    print(results.to_pandas())
+
+    print("\n=== Average Scores ===")
+    print(results.to_pandas().mean(numeric_only=True))

@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from document_rag.api.conversations import delete_thread_checkpoints, get_owned_conversation
 from document_rag.api.database import get_db
-from document_rag.vector_store.factor.factor import get_checkpointer
+from document_rag.api.dependencies import get_checkpointer
 from document_rag.api.models import Conversation, User
 from document_rag.agent.agent import get_agent
 from document_rag.agent.retriever_tool import create_search_tool

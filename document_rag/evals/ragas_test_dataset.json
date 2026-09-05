@@ -2,6 +2,531 @@
 [
   {
     "user_id": "yadavnitesh86",
+    "question": "What is Matplotlib used for according to the data visualization PDF?",
+    "ground_truth": "Matplotlib is a Python library used for creating static, animated, and interactive plots, providing low-level control over plot appearance, and serving as a foundation for libraries such as Seaborn and Pandas plotting."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "How do you install Matplotlib according to the PDF?",
+    "ground_truth": "Install Matplotlib with the command `pip install matplotlib`."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "What is a line plot and what is it typically used to show?",
+    "ground_truth": "A line plot connects data points with straight lines and is typically used to show trends or changes over a continuous variable such as time or distance."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "What are the key features of a line plot in Matplotlib?",
+    "ground_truth": "The x-axis is usually continuous, the y-axis contains the measured values, line style can be solid, dashed, or dotted, and markers can show individual data points."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "When should a line plot be used according to the PDF?",
+    "ground_truth": "Use a line plot when data points are ordered, when you want to show progression or trends, and when comparing changes rather than individual categories."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "How can a Matplotlib line plot be styled?",
+    "ground_truth": "The PDF demonstrates styling with parameters such as `color`, `linestyle`, `linewidth`, `marker`, and `markersize`."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "How do you plot two lines on the same Matplotlib chart?",
+    "ground_truth": "Call `plt.plot(x, y, label=\"Line 1\")` and `plt.plot(x, y2, label=\"Line 2\")`, then use `plt.legend()` to identify the lines."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "How do you save a Matplotlib plot to a file?",
+    "ground_truth": "Use `plt.savefig(\"line_plot.png\")` to save the plot."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "What does the Matplotlib format string `g--` mean?",
+    "ground_truth": "The format string `g--` represents a green dashed line."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "What does the Matplotlib format string `bo` mean?",
+    "ground_truth": "The format string `bo` represents blue circular markers with no connecting line."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "What is a bar chart in Matplotlib?",
+    "ground_truth": "A bar chart displays categorical data using rectangular bars, where each bar's height or length represents a value."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "When should a bar chart be used?",
+    "ground_truth": "Use a bar chart when comparing different categories, when the data is discrete rather than continuous, and when a clear visual comparison is desired."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "How do you create a horizontal bar chart in Matplotlib?",
+    "ground_truth": "Use `plt.barh(x, y)` to create a horizontal bar chart."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "How does the PDF create grouped bar charts?",
+    "ground_truth": "It uses two `plt.bar()` calls with x positions shifted by `-width/2` and `+width/2`, then sets category labels with `plt.xticks()` and adds a legend."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "How can text annotations be added to bars in Matplotlib?",
+    "ground_truth": "The PDF uses `plt.text()` inside a loop, for example `plt.text(i, v, str(v))`, to place the value above each bar."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "What is a scatter plot?",
+    "ground_truth": "A scatter plot shows the relationship between two variables by plotting points on a two-dimensional plane."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "When should a scatter plot be used according to the PDF?",
+    "ground_truth": "Use a scatter plot to analyze the relationship between two variables, when the data is numerical and continuous, and when you do not want to imply a trend by connecting points."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "What do the `s`, `c`, `marker`, and `alpha` arguments control in a Matplotlib scatter plot?",
+    "ground_truth": "`s` controls marker size, `c` controls color, `marker` controls marker shape, and `alpha` controls transparency."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "How can a colormap be used in a Matplotlib scatter plot?",
+    "ground_truth": "Pass numeric values through `c` and specify a colormap such as `cmap='viridis'`; the PDF also shows `plt.colorbar(label='Color Scale')`."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "How do you create multiple scatter plots on one Matplotlib figure?",
+    "ground_truth": "Call `plt.scatter()` more than once, giving each dataset a label, then use `plt.legend()` to distinguish them."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "What is a pie chart used to show?",
+    "ground_truth": "A pie chart is a circular chart divided into slices to show relative proportions of a whole; each slice represents a category and its size represents that category's value relative to the total."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "When does the PDF recommend using a pie chart?",
+    "ground_truth": "Use a pie chart for part-to-whole relationships with categorical data and only a few categories, because too many slices become difficult to read."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "How can percentages be shown on a Matplotlib pie chart?",
+    "ground_truth": "Pass `autopct='%1.1f%%'` to `plt.pie()`."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "What do `startangle` and `shadow` do in a Matplotlib pie chart?",
+    "ground_truth": "`startangle=90` rotates the chart, while `shadow=True` adds a shadow."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "What is `wedgeprops` in a Matplotlib pie chart?",
+    "ground_truth": "`wedgeprops` is a dictionary of properties controlling the appearance of pie slices, including properties such as edgecolor, linewidth, linestyle, and alpha."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "What is a histogram?",
+    "ground_truth": "A histogram shows the distribution of numerical data by dividing values into bins or ranges and counting how many values fall into each bin."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "What does the `bins` parameter control in a Matplotlib histogram?",
+    "ground_truth": "`bins` controls how the data is divided and can be specified as an integer or as a sequence of bin edges."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "What histogram orientations are supported in the PDF?",
+    "ground_truth": "The default orientation is vertical, and a horizontal histogram can be created with `orientation='horizontal'`."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "What does `alpha` do when plotting multiple histograms?",
+    "ground_truth": "`alpha` controls transparency so that overlapping histograms remain visible."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "What does a Matplotlib box plot summarize?",
+    "ground_truth": "A box plot summarizes a dataset using five key numbers: minimum, first quartile (Q1), median (Q2), third quartile (Q3), and maximum, and it can also show outliers."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "What is Q1 in a box plot?",
+    "ground_truth": "Q1 is the first quartile, the 25th percentile of the data; 25% of data points are below Q1 and it forms the bottom edge of the box."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "What is the median in a box plot?",
+    "ground_truth": "The median, or Q2, is the 50th percentile, is shown by the line inside the box, and splits the dataset into two halves."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "What is Q3 in a box plot?",
+    "ground_truth": "Q3 is the third quartile, the 75th percentile; 75% of data points are below it and it forms the top edge of the box."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "How is IQR defined in the PDF?",
+    "ground_truth": "The interquartile range is `IQR = Q3 − Q1` and represents the middle 50% of the data."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "How are outliers defined in the box plot notes?",
+    "ground_truth": "Outliers are data points outside 1.5 × IQR from Q1 or Q3, and they are plotted beyond the whiskers."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "How do you create a horizontal box plot in Matplotlib?",
+    "ground_truth": "Use `plt.boxplot(data, vert=False)`."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "How can the mean be shown in a Matplotlib box plot?",
+    "ground_truth": "Use `showmeans=True` to add the mean marker and `meanline=True` to draw the mean as a line instead of a point."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "What is a stack plot used for?",
+    "ground_truth": "A stack plot stacks multiple data series, with each layer showing a category's contribution and the top line showing the cumulative total; it is useful for cumulative data over time, comparing components, and showing parts and whole."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "What are Matplotlib subplots?",
+    "ground_truth": "Subplots allow multiple plots to be displayed in a single figure arranged in a grid, which is useful for comparing different datasets or visualizations side by side."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "What does `plt.subplot(nrows, ncols, index)` do?",
+    "ground_truth": "It selects the current axes for a subplot; the index counts row-wise from top-left to bottom-right."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "What Matplotlib approach is recommended for professional plots in the PDF?",
+    "ground_truth": "The PDF recommends the object-oriented (OO) approach for modern Matplotlib."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "Why does the PDF recommend the object-oriented Matplotlib style?",
+    "ground_truth": "OO style provides more control over multiple axes, subplots, and figures, produces cleaner and more readable code for complex plots, avoids side effects of the state-based interface, and makes it easier to combine multiple plot types."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "What is the difference between `fig` and `ax` in Matplotlib?",
+    "ground_truth": "`fig` represents the entire figure or canvas, while `ax` represents a single plot or graph within the figure."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "What is `plt.tight_layout()` used for in the subplot examples?",
+    "ground_truth": "The PDF uses `plt.tight_layout()` after arranging subplots so the figure layout is handled cleanly before showing it."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "What is Seaborn?",
+    "ground_truth": "Seaborn is a high-level Python data visualization library built on top of Matplotlib, providing simpler and more attractive statistical graphics with modern default themes and color palettes."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "How does Seaborn integrate with Pandas?",
+    "ground_truth": "Seaborn works seamlessly with Pandas DataFrames and handles column names directly."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "What are `hue`, `style`, and `size` used for in Seaborn?",
+    "ground_truth": "`hue` maps color by category, `style` maps marker style by category, and `size` changes point size according to a variable."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "What kinds of complex plotting tasks does Seaborn make easier according to the PDF?",
+    "ground_truth": "Seaborn can automatically handle tasks such as regression lines, aggregation, and confidence intervals."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "What are relational plots in Seaborn?",
+    "ground_truth": "Relational plots show the relationship between two or more variables, typically numerical x and y variables."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "What are categorical plots in Seaborn?",
+    "ground_truth": "Categorical plots visualize data where one variable is categorical or discrete and the other is usually numerical."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "What are distribution plots in Seaborn used for?",
+    "ground_truth": "Distribution plots are used to visualize the distribution of a single numerical variable."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "What are matrix plots used for in Seaborn?",
+    "ground_truth": "Matrix plots visualize 2D data arranged in a matrix or table, such as correlation matrices, confusion matrices, or pivot tables."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "How is the Seaborn bar plot example configured in the PDF?",
+    "ground_truth": "The example uses `sns.barplot(data=tips, x=\"day\", y=\"total_bill\", hue=\"sex\")` to show average total bill per day by sex."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "How is the Seaborn histogram example configured?",
+    "ground_truth": "The PDF uses `sns.histplot(data=tips, x=\"total_bill\", bins=10, kde=False)` to plot the distribution of total bill with 10 bins and no KDE."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "How is the Seaborn heatmap example created?",
+    "ground_truth": "The PDF calculates `corr = tips.corr()` and then calls `sns.heatmap(corr, annot=True, cmap=\"coolwarm\")`."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "What is the recommended division of responsibility between Seaborn and Matplotlib?",
+    "ground_truth": "The PDF recommends using Seaborn for high-level plots and Matplotlib for low-level customizations."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "What style options are shown for `sns.set_style()`?",
+    "ground_truth": "The PDF lists `white`, `dark`, `whitegrid`, and `ticks` as style options."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "How does the PDF combine Seaborn with Matplotlib's object-oriented interface?",
+    "ground_truth": "It creates `fig, ax = plt.subplots(...)`, passes `ax=ax` into Seaborn plotting functions, and then uses Matplotlib axes methods such as `ax.set_title`, `ax.set_xlabel`, and `ax.set_ylabel`."
+  },
+  {
+    "user_id": "yadavnitesh86",
+    "question": "In the Seaborn scatter example, which variables are mapped to x, y, hue, style, and size?",
+    "ground_truth": "The example maps `total_bill` to x, `tip` to y, `day` to hue, `sex` to style, and `size` to point size."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "What is the main goal of the text summarizer project?",
+    "ground_truth": "The project builds a dialogue summarizer that reads a conversation and produces a short summary of what was discussed."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "Which dataset is used for the dialogue summarization project?",
+    "ground_truth": "The project uses the SAMSum dataset, which contains chat conversations with human-written summaries."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "What model is fine-tuned for the summarization task?",
+    "ground_truth": "A pre-trained T5-small model is fine-tuned for dialogue summarization."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "What does T5 stand for and how does it treat NLP tasks?",
+    "ground_truth": "T5 stands for Text-To-Text Transfer Transformer and treats NLP problems as text-to-text tasks, where text is given as input and text is generated as output."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "Why is T5-small described as useful for learning and limited compute?",
+    "ground_truth": "T5-small is described as a smaller and faster version of T5, making it suitable for learning and limited compute."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "What is the role of the HuggingFace Transformers library in the project?",
+    "ground_truth": "It provides ready-to-use pre-trained models and tools for training, fine-tuning, and using models such as T5, BERT, and GPT."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "What are the two important columns in the SAMSum data used here?",
+    "ground_truth": "The `dialogue` column contains the full chat conversation and the `summary` column contains the human-written short summary used as the target or label."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "How many training and validation examples are sampled in the notebook?",
+    "ground_truth": "The notebook samples 4,000 training examples and 500 validation examples."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "Why does the project sample only 4,000 training examples and 500 validation examples?",
+    "ground_truth": "Sampling reduces training time and compute requirements while still teaching the model the summarization pattern."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "Why is `random_state=42` used during sampling?",
+    "ground_truth": "It makes the random selection reproducible so running the code again gives the same sampled rows."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "What does `reset_index(drop=True)` do after sampling?",
+    "ground_truth": "It resets the row indexes to sequential values such as 0, 1, 2, 3 and discards the old index instead of keeping it as a new column."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "Why is text cleaned before training?",
+    "ground_truth": "Cleaning standardizes messy text such as extra line breaks, multiple spaces, HTML tags, and inconsistent capitalization so the model can learn language patterns more effectively."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "What does the `clean_data()` function do?",
+    "ground_truth": "It replaces Windows line breaks, collapses repeated whitespace, removes HTML tags, strips leading and trailing spaces, and converts text to lowercase."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "What does `re.sub(r\"\\r\\n\", \" \", text)` do in the cleaning function?",
+    "ground_truth": "It replaces Windows-style carriage-return and newline sequences with a single space."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "What does `re.sub(r\"\\s+\", \" \", text)` do?",
+    "ground_truth": "It collapses one or more whitespace characters, including spaces, tabs, and newlines, into a single space."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "How does the cleaning function remove HTML tags?",
+    "ground_truth": "It uses `re.sub(r\"<.*?>\", \" \", text)`, where `.*?` performs a non-greedy match between `<` and `>`."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "Why does the PDF warn against using greedy `.*` for HTML tags?",
+    "ground_truth": "A greedy pattern can accidentally delete text between two unrelated tags, whereas `.*?` stops at the shortest match."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "What is tokenization in this project?",
+    "ground_truth": "Tokenization converts raw text into numeric token IDs that the neural network can process."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "Why should the tokenizer match the pre-trained model?",
+    "ground_truth": "Each pre-trained model has its own tokenizer vocabulary and rules, and using a different tokenizer would produce token IDs the model does not understand correctly."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "Which tokenizer is used with T5-small?",
+    "ground_truth": "The project uses `T5Tokenizer.from_pretrained(\"t5-small\")`."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "What does `padding=\"max_length\"` do during tokenization?",
+    "ground_truth": "It pads sequences with filler tokens so they all reach the specified maximum length."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "What are the maximum token lengths used for dialogue and summary during training?",
+    "ground_truth": "The dialogue input uses a maximum length of 520 tokens and the summary uses a maximum length of 150 tokens."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "What does `truncation=True` do?",
+    "ground_truth": "It cuts text that exceeds the maximum length instead of allowing overlong sequences to cause an error."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "Why are the summary token IDs assigned to the `labels` key?",
+    "ground_truth": "The HuggingFace Trainer expects the key `labels` for the target sequence that the model should learn to predict."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "What do `input_ids`, `attention_mask`, and `labels` represent in the tokenized dataset?",
+    "ground_truth": "`input_ids` are the token IDs for the dialogue, `attention_mask` marks real tokens with 1 and padding with 0, and `labels` are the token IDs for the target summary."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "What is `T5ForConditionalGeneration`?",
+    "ground_truth": "It is T5 with a generation head and uses an encoder-decoder architecture in which the encoder reads the dialogue and the decoder generates the summary word by word."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "What devices can the project select automatically?",
+    "ground_truth": "The code checks MPS first, then CUDA, and otherwise falls back to CPU."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "Why should the model and input tensors be on the same device?",
+    "ground_truth": "Putting the model and inputs on different devices causes a tensor device mismatch runtime error."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "What is the purpose of `TrainingArguments`?",
+    "ground_truth": "TrainingArguments is a configuration object that stores the hyperparameters and settings controlling how training will run; it does not train the model itself."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "What are the key TrainingArguments values used in the PDF?",
+    "ground_truth": "The example uses `output_dir=\"./result_of_model\"`, `num_train_epochs=6`, `weight_decay=0.01`, train and evaluation batch sizes of 8, evaluation and saving each epoch, and `warmup_steps=500`."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "What does `weight_decay=0.01` do?",
+    "ground_truth": "It is a regularization technique that slightly shrinks weights to help prevent overfitting."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "What does `warmup_steps=500` mean?",
+    "ground_truth": "The learning rate is gradually increased during the first 500 steps instead of starting at full speed, which helps training stability."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "What is an epoch in the project?",
+    "ground_truth": "One epoch is one complete pass through the entire training dataset; with 4,000 examples and batch size 8, one epoch corresponds to 500 training steps."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "What does the HuggingFace Trainer automate?",
+    "ground_truth": "Trainer automates the training loop, including the forward pass, loss calculation, backward pass, optimizer step, evaluation, checkpoint saving, and logging."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "What happens conceptually during `trainer.train()`?",
+    "ground_truth": "A batch is fed to the model, predictions are compared with the true labels using a loss function, gradients are calculated, weights are updated, the process repeats for all batches and epochs, and evaluation plus checkpoint saving occur after each epoch."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "How is the fine-tuned model saved?",
+    "ground_truth": "The PDF saves the model with `model.save_pretrained(\"./saved_summary_model\")` and the tokenizer with `tokenizer.save_pretrained(\"./saved_summary_model\")`."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "Why should the tokenizer be saved together with the model?",
+    "ground_truth": "Saving the tokenizer is necessary because the model alone is not enough to correctly process new text after reloading."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "What is inference in this summarization project?",
+    "ground_truth": "Inference means using the already-trained model to make predictions on new, unseen dialogue by generating a summary."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "What steps are performed by `summarize_dialogue()`?",
+    "ground_truth": "The function cleans the dialogue, tokenizes it, moves the tensors to the selected device, generates the summary with beam search, and decodes the output tokens into readable text."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "What does `return_tensors=\"pt\"` do during inference?",
+    "ground_truth": "It makes the tokenizer return PyTorch tensors instead of plain Python lists, which is what the model expects for generation."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "What do `max_length=150`, `num_beams=4`, and `early_stopping=True` do during generation?",
+    "ground_truth": "`max_length=150` limits the generated summary to at most 150 tokens, `num_beams=4` uses beam search with four beams, and `early_stopping=True` stops when all beams reach an end-of-sequence token."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "What is beam search according to the study notes?",
+    "ground_truth": "Beam search keeps the top four most promising partial sentences at each generation step and selects the best complete sentence at the end, usually producing better summaries than greedy decoding."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "What does `skip_special_tokens=True` do?",
+    "ground_truth": "It removes special tokens such as `<pad>`, `</s>`, and `<unk>` when decoding so they do not appear in the final human-readable summary."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "What happens if `num_beams=1` is used instead of 4?",
+    "ground_truth": "`num_beams=1` is equivalent to greedy decoding rather than beam search."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "What task prefix does the base, non-fine-tuned T5 example use?",
+    "ground_truth": "The example uses the task prefix `summarize:` before the text."
+  },
+  {
+    "user_id": "aman545ddfd",
+    "question": "What does the full seven-step summarizer pipeline look like?",
+    "ground_truth": "The pipeline is: load and sample data, clean text, tokenize, load the model and choose a device, configure and run training, save the fine-tuned model and tokenizer, then generate summaries during inference."
+  },
+  {
+    "user_id": "yadavnitesh86",
     "question": "What are the main steps involved in text summarization?",
     "ground_truth": "No relevant documents should be retrieved for this question."
   },

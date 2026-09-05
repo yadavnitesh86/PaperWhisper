@@ -7,8 +7,8 @@ chunks:
 
 give_llm:
   provider : openai
-  model : gpt-5-mini
-  base_url : https://api.bluesminds.com/v1 # if you are using third party website 
+  model : DeepSeek-V4-Pro
+  base_url : https://api.hcnsec.cn/v1 # if you are using third party website 
 
 memory :
   db_path : "./document_rag/memory/memory.db"

@@ -17,3 +17,5 @@ wheels/
 *.env
 document_rag\memory\memory.db
 document_rag\uploads
+frontend
+document_rag/uploads/*

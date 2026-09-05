@@ -25,10 +25,10 @@ with open(
 
 async def initialize_sample_dataset():
 
-    # Initialize checkpointer once
+    # Initialize checkpointer 
     async with get_checkpointer() as checkpointer:
 
-        # Initialize retrievers/tools once per user
+        # Initializing  retrievers/tools once per user
         user_resources = {}
 
         for user_id in { "yadavnitesh86", "aman545ddfd",}:
@@ -61,9 +61,9 @@ async def initialize_sample_dataset():
             print(f"\nUser: {user_id}")
             print(f"Question: {question}")
 
-            # -------------------------
-            # Retrieve documents
-            # -------------------------
+            
+            # Retrieves documents
+           
 
             docs = await retriever.ainvoke(question)
 
@@ -72,10 +72,9 @@ async def initialize_sample_dataset():
                 for doc in docs
             ]
 
-            # -------------------------
-            # Generate answer
-            # -------------------------
-
+            
+            # Generates answer
+           
             thread_id = f"eval-{uuid.uuid4()}"
 
             result = await agent.ainvoke(
@@ -96,9 +95,9 @@ async def initialize_sample_dataset():
 
             answer = result["messages"][-1].content
 
-            # -------------------------
-            # Create evaluation sample
-            # -------------------------
+            
+            # Creates evaluation sample
+            
 
             sample = SingleTurnSample(
                 user_input=question,
@@ -107,9 +106,9 @@ async def initialize_sample_dataset():
                 reference=ground_truth,
             )
 
-            # -------------------------
-            # Persist immediately
-            # -------------------------
+            
+            # Persists  immediately
+            
 
             record = {
                 "user_id": user_id,
