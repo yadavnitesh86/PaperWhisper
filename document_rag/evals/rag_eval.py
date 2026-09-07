@@ -36,7 +36,7 @@ with RESULT_FILE.open("r", encoding="utf-8") as f:
         samples.append(sample)
 
 
-dataset = EvaluationDataset(samples=samples[20:40])
+dataset = EvaluationDataset(samples=samples[40:60])
 client = OpenAI(
     api_key=os.getenv("OPENAI_API_KEY"),
     base_url=config["give_llm"]["base_url"],

@@ -10,16 +10,7 @@ from document_rag.api.database import Base
 
 class User(SQLAlchemyBaseUserTableUUID, Base):
     """
-    SQLAlchemyBaseUserTableUUID already gives us, for free:
-      id (UUID, primary key), email, hashed_password,
-      is_active, is_superuser, is_verified
-
-    `email` stays on the table only because FastAPI Users hardcodes it
-    as a required column on every user model — this project never
-    shows it to anyone or uses it for anything (see users.py).
-    `username` is the field this project actually cares about: it's
-    what gets checked at login, and it's what becomes the RAG
-    user_id everywhere else in the app.
+    User table created here 
     """
 
     __tablename__ = "users"

@@ -41,4 +41,4 @@ def create_search_tool(user_id: str, collection_name: str):
             for doc in docs
         )
 
-    return search_documents #, compression_retriever
+    return search_documents # , compression_retriever

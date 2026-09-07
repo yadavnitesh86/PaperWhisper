@@ -1,7 +1,11 @@
+from typing import Any
+
+
 import asyncio
 from langchain.agents import create_agent
 from document_rag.vector_store.factor.factor import get_llm
 from langchain.agents.middleware import SummarizationMiddleware
+from langchain.agents.middleware import ToolCallLimitMiddleware
 
 
 system_prompt = """You are a document QA agent. Use the search_documents tool as your only source of factual information.
@@ -27,63 +31,8 @@ def get_agent(tools, checkpointer):
         tools=tools,
         system_prompt=system_prompt,
         checkpointer=checkpointer,
-        middleware=[SummarizationMiddleware(model=llm,
-        trigger=("tokens", 12000),
-        keep=("messages", 10),
-    )
-]
+        middleware=[SummarizationMiddleware[Any, None](model=llm,trigger=("tokens", 12000),keep=("messages", 10),),
+        ToolCallLimitMiddleware(thread_limit=10, run_limit=5)]
     )
 
 
-async def main():
-
-    print("reached main\n")
-
-    USER_ID = "yadavnitesh86"
-    COLLECTION_NAME = "rag_document"
-
-    from document_rag.agent.retriever_tool import create_search_tool
-    from document_rag.vector_store.factor.factor import get_checkpointer
-
-    print("reached till tool")
-
-    # Your retriever/tool factory remains synchronous
-    tool = create_search_tool(
-        user_id=USER_ID,
-        collection_name=COLLECTION_NAME,
-    )
-
-    tools = [tool]
-
-    print("reached till agent\n")
-
-    async with get_checkpointer() as checkpointer:
-
-        agent = get_agent(
-            tools=tools,
-            checkpointer=checkpointer,
-        )
-
-        result = await agent.ainvoke(
-            {
-                "messages": [
-                    {
-                        "role": "user",
-                        "content": "what is seaborn explain in short",
-                    }
-                ]
-            },
-            config={
-                "configurable": {
-                    "thread_id": "dddf-123",
-                }
-            },
-        )
-
-        print(result["messages"][-1].content)
-
-    print("success\n")
-
-
-if __name__ == "__main__":
-    asyncio.run(main())

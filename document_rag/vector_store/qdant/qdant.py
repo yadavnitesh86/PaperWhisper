@@ -2,7 +2,6 @@
 import os
 import logging
 from dotenv import load_dotenv
-
 import logfire
 from qdrant_client import QdrantClient
 from qdrant_client.models import (
@@ -19,8 +18,8 @@ from document_rag.vector_store.ingestion.chunker import doc_to_chunks
 
 load_dotenv()
 
-QDRANT_URL ="https://5b794885-5a61-4251-a00f-c33dbbf2f481.sa-east-1-0.aws.cloud.qdrant.io"# os.getenv("QDRANT_URL")
-QDRANT_API_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3MiOiJtIiwic3ViamVjdCI6ImFwaS1rZXk6NmU2NjkxOGItMTExNS00N2Q4LWFmMjItNDYwMzdlMDkwYzk2In0.uAtmvqP6IqVR5hKh03k0izlc09fCFjOJAjV4eGr10DQ"
+QDRANT_URL =os.getenv("QDRANT_URL")
+QDRANT_API_KEY= os.getenv("QDRANT_API_KEY")
 DEFAULT_BATCH_SIZE = 100
 DEFAULT_TOP_K = 15
 SPARSE_MODEL_NAME = "Qdrant/bm25"
@@ -175,41 +174,3 @@ def get_hybrid_user_retriever(user_id: str, collection_name: str, k: int = DEFAU
     )
 
 
-if __name__ == "__main__":
-    USER_ID = "yadavnitesh86"
-    COLLECTION_NAME = "rag_document"
-
-    client = get_client()
-
-    points, _ = client.scroll(
-        collection_name="rag_document",
-        limit=5,
-        with_payload=True,
-        with_vectors=False,
-    )
-
-    for point in points:
-        print("=" * 60)
-        print("ID:", point.id)
-        print("PAYLOAD:")
-        print(point.payload)
-
-    retriever = get_hybrid_user_retriever(
-        user_id=USER_ID,
-        collection_name=COLLECTION_NAME,
-        k=5,
-    )
-
-    print("Retriever created!")
-
-    results = retriever.invoke(
-        "what is matplotlib"
-    )
-
-    print("Results:", len(results))
-
-    for i, doc in enumerate(results, 1):
-        print(f"\n--- Result {i} ---")
-        print(doc.page_content[:500])
-        print("Metadata:", doc.metadata)
-    

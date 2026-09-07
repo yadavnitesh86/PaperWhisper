@@ -21,30 +21,44 @@ def get_dense_ef():
 
 
 def get_llm():
-    provider = config["give_llm"]["provider"]
-    model = config["give_llm"]["model"]
-    base_url = config["give_llm"]["base_url"]
+
+    provider = os.getenv("LLM_PROVIDER")
+    model = os.getenv("LLM_MODEL")
+    base_url = os.getenv("LLM_BASE_URL")
+    api_key = os.getenv("LLM_API_KEY")
 
     if provider == "ChatGroq":
         from langchain_groq import ChatGroq
 
-            
-        return ChatGroq(model=model)
+        return ChatGroq(
+            model=model,
+            api_key=api_key,
+        )
 
     elif provider == "anthropic":
         from langchain_anthropic import ChatAnthropic
 
-            
-        return ChatAnthropic(model=model)
+        return ChatAnthropic(
+            model=model,
+            api_key=api_key,
+        )
 
     else:
         from langchain_openai import ChatOpenAI
+
         if base_url:
-            print("using base url")
-            return ChatOpenAI(model=model,api_key=os.getenv("OPENAI_API_KEY"),base_url=base_url)
+            return ChatOpenAI(
+                model=model,
+                api_key=api_key,
+                base_url=base_url,
+            )
         else:
             print("without using base url")
-            return ChatOpenAI(model=model)
+
+            return ChatOpenAI(
+                model=model,
+                api_key=api_key,
+            )
 
 
 def get_checkpointer_db_path() -> str:

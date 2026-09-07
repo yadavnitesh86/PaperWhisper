@@ -5,10 +5,7 @@ chunks:
   chunk_size : 1000
   chunk_overlap : 100
 
-give_llm:
-  provider : openai
-  model : DeepSeek-V4-Pro
-  base_url : https://api.hcnsec.cn/v1 # if you are using third party website 
+
 
 memory :
   db_path : "./document_rag/memory/memory.db"

@@ -23,10 +23,4 @@ def doc_to_chunks(docs):
             logfire.error("Failed to chunks the doc Exception : {name}: ",name=str(e))
             raise 
 
-if __name__ == "__main__":
-    docs = document_to_doc(
-        r"document_rag\vector_store\ingestion\documents\yadavnitesh86",
-        "yadavnitesh86"
-    )
-    chunks = doc_to_chunks(docs)
-    print(chunks[0])
+

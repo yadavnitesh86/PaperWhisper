@@ -25,7 +25,7 @@ def document_to_doc(path: str, user_id: str):
 
     docs = []
     
-    # --- Load PDFs ---
+    #  Loads PDFs 
     pdf_files = list(path_obj.glob("**/*.pdf"))
     if pdf_files:
         logfire.info("Loading {count} PDF files...", count=len(pdf_files))
@@ -40,7 +40,7 @@ def document_to_doc(path: str, user_id: str):
                 except Exception as e:
                     logfire.error("Failed PDF {name}: {error}", name=pdf.name, error=str(e))
 
-    # --- Load DOCX ---
+    #  Loads DOCX 
     docx_files = list(path_obj.glob("**/*.docx"))
     if docx_files:
         logfire.info("Loading {count} DOCX files...", count=len(docx_files))
@@ -55,7 +55,7 @@ def document_to_doc(path: str, user_id: str):
                 except Exception as e:
                     logfire.error("Failed DOCX {name}: {error}", name=docx.name, error=str(e))
 
-    # --- Load TXT/MD ---
+    # Loads TXT/MD 
     text_files = list(path_obj.glob("**/*.txt")) + list(path_obj.glob("**/*.md"))
     if text_files:
         logfire.info("Loading {count} Text/MD files...", count=len(text_files))
@@ -73,13 +73,3 @@ def document_to_doc(path: str, user_id: str):
     logfire.info("Successfully loaded {total} documents.", total=len(docs))
     return docs
 
-
-if __name__ == "__main__":
-    # Step 1: Load raw documents
-    docs = document_to_doc(
-        r"document_rag\vector_store\ingestion\documents\yadavnitesh86",
-        "yadavnitesh86"
-    )
-    
-    print(f"\nLoaded {len(docs)} raw documents.")
-    print(f"First document has {len(docs[0].page_content)} characters.\n")
