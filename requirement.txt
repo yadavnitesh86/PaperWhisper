@@ -34,3 +34,5 @@ fastapi-users[sqlalchemy]
 uvicorn[standard]
 aiosqlite
 ragas
+pytest
+pytest-asyncio

@@ -5,7 +5,10 @@ chunks:
   chunk_size : 1000
   chunk_overlap : 100
 
-
+rag_llm:
+  provider : openai
+  model : deepseek-v4-flash
+  base_url : https://agentrouter.org/v1 # if you are using third party website 
 
 memory :
   db_path : "./document_rag/memory/memory.db"

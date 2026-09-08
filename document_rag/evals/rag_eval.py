@@ -36,23 +36,24 @@ with RESULT_FILE.open("r", encoding="utf-8") as f:
         samples.append(sample)
 
 
-dataset = EvaluationDataset(samples=samples[40:60])
+dataset = EvaluationDataset(samples=samples[80:101])
 client = OpenAI(
     api_key=os.getenv("OPENAI_API_KEY"),
-    base_url=config["give_llm"]["base_url"],
+    base_url=config["rag_llm"]["base_url"],
     
     default_headers={
         "User-Agent": "claude-cli/2.0.0 (external, cli)"
     }
 )
-# run_config = RunConfig(
-#     max_workers=1,
-#     max_retries=10,
-#     max_wait=60,
-# )
+
+run_config = RunConfig(
+    max_workers=1,
+    max_retries=10,
+    max_wait=60,
+)
 
 evaluator_llm = llm_factory(
-    config["give_llm"]["model"],
+   config["rag_llm"]["model"],
     client=client,
     max_tokens=15000,
 )
@@ -63,10 +64,9 @@ if __name__ == "__main__":
 
     results = evaluate(
         dataset=dataset,
-        metrics=[Faithfulness(),
+        metrics=[LLMContextPrecisionWithReference(),
         ],
         llm=evaluator_llm,
-        \
         # run_config=run_config,
     )
     print("\n=== Individual Results ===")
