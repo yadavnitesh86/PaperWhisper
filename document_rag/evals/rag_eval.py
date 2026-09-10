@@ -5,10 +5,8 @@ from ragas import EvaluationDataset, SingleTurnSample, evaluate
 from ragas.metrics._context_precision import LLMContextPrecisionWithReference
 from ragas.metrics._context_recall import LLMContextRecall
 from ragas.metrics._faithfulness import Faithfulness
-from ragas.metrics._answer_relevance import AnswerRelevancy
-from ragas.metrics._factual_correctness import FactualCorrectness
 from ragas.llms import llm_factory
-from document_rag.vector_store.factor.factor import get_llm , get_dense_ef
+from document_rag.vector_store.factor.factor import   get_dense_ef
 from document_rag.config.config import load_config
 import os
 from dotenv import load_dotenv
@@ -36,7 +34,7 @@ with RESULT_FILE.open("r", encoding="utf-8") as f:
         samples.append(sample)
 
 
-dataset = EvaluationDataset(samples=samples[80:101])
+dataset = EvaluationDataset(samples=samples)
 client = OpenAI(
     api_key=os.getenv("OPENAI_API_KEY"),
     base_url=config["rag_llm"]["base_url"],
@@ -64,7 +62,9 @@ if __name__ == "__main__":
 
     results = evaluate(
         dataset=dataset,
-        metrics=[LLMContextPrecisionWithReference(),
+        metrics=[LLMContextRecall(),
+        Faithfulness(),
+        LLMContextPrecisionWithReference()
         ],
         llm=evaluator_llm,
         # run_config=run_config,

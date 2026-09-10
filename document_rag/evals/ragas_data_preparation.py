@@ -99,12 +99,7 @@ async def initialize_sample_dataset():
             # Creates evaluation sample
             
 
-            sample = SingleTurnSample(
-                user_input=question,
-                response=answer,
-                retrieved_contexts=retrieved_contexts,
-                reference=ground_truth,
-            )
+            
 
             
             # Persists  immediately

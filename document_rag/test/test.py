@@ -29,7 +29,7 @@ async def test_rag_agent_can_use_retriever():
             checkpointer=checkpointer,
         )
 
-        # Give the agent an explicit instruction to use the retriever.
+        # Giving  the agent an explicit instruction to use the retriever.
         result = await agent.ainvoke(
             {
                 "messages": [
@@ -51,10 +51,10 @@ async def test_rag_agent_can_use_retriever():
             },
         )
 
-    # Get the final AI response.
+    
     final_message = result["messages"][-1]
 
-    # LangChain AIMessage normally stores the generated text in content.
+    
     response = final_message.content
 
     assert response.strip() == "Yes"

@@ -1,21 +1,37 @@
 # Python-generated files
 __pycache__/
 *.py[oc]
+
+# Build artifacts
 build/
 dist/
 wheels/
-*.egg-info
+*.egg-info/
 
-# Virtual environments
-.venv
+# Virtual environment
+.venv/
+
+# Environment / secrets
 .env
 .env.local
-.ruff_cache/
-.vscode/
-.idea/
 .env.*.local
 *.env
-document_rag\memory\memory.db
-document_rag\uploads
-frontend
-document_rag/uploads/*
+
+# Python tooling
+.ruff_cache/
+.pytest_cache/
+
+# IDE
+.vscode/
+.idea/
+
+# Project data
+document_rag/memory/memory.db
+document_rag/uploads/
+
+# Frontend
+frontend/
+
+# Tests / evaluation
+document_rag/test/
+document_rag/evals/

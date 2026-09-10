@@ -7,8 +7,8 @@ chunks:
 
 rag_llm:
   provider : openai
-  model : deepseek-v4-flash
-  base_url : https://agentrouter.org/v1 # if you are using third party website 
+  model : gpt-5.6-luna
+  base_url : https://modeloc.com/pool/v1  # if you are using third party website 
 
 memory :
   db_path : "./document_rag/memory/memory.db"
