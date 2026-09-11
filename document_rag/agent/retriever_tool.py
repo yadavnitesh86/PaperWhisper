@@ -7,7 +7,7 @@ import asyncio
 
 def create_search_tool(user_id: str, collection_name: str):
 
-    # Keep this synchronous
+    
     retriever = get_hybrid_user_retriever(
         user_id=user_id,
         collection_name=collection_name,
