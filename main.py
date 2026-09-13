@@ -2,6 +2,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from langgraph.checkpoint.sqlite.aio import AsyncSqliteSaver
+from fastapi.middleware.cors import CORSMiddleware
 
 from document_rag.api.database import init_db
 from document_rag.api.routes import auth, chat, documents
@@ -20,7 +21,13 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="Document RAG API", lifespan=lifespan)
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 app.include_router(auth.router)
 app.include_router(documents.router)
 app.include_router(chat.router)

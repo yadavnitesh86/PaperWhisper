@@ -41,6 +41,8 @@ dependencies = [
     "ragas==0.4.3",
     "rank-bm25>=0.2.2",
     "sentence-transformers>=6.0.0",
+    "torch",
+    "torchvision",
     "unstructured[all-docs]>=0.27.5",
     "uvicorn[standard]>=0.52.4",
 ]
@@ -49,3 +51,12 @@ dependencies = [
 dev = [
     "pytest-asyncio>=1.4.0",
 ]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.uv.sources]
+torch = [{ index = "pytorch-cpu" }]
+torchvision = [{ index = "pytorch-cpu" }]

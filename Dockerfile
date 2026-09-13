@@ -7,21 +7,24 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app
 
-# Install uv
+# Installing uv
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 # Copy dependency files first
 COPY pyproject.toml uv.lock ./
 
-# Install dependencies
-RUN uv sync --frozen --no-install-project
+# Install only production dependencies
+RUN uv sync --frozen --no-install-project --no-dev --no-cache
 
-# Copy project
+# Pre-download FlashRank model so it never downloads at runtime
+RUN uv run python -c "from flashrank import Ranker; Ranker(model_name='ms-marco-MiniLM-L-12-v2')"
+
+# Copy project source code
 COPY . .
 
-# Install project
-RUN uv sync --frozen --no-dev
+# Install the project itself
+RUN uv sync --frozen --no-dev --no-cache
 
 EXPOSE 8000
 
-CMD ["uv", "run", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"] 
+CMD ["uv", "run", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

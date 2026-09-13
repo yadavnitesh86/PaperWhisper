@@ -1,21 +1,63 @@
-# Python-generated files
+# Python caches & build artifacts
 __pycache__/
-*.py[oc]
+*.py[cod]
+*$py.class
+*.so
 build/
+develop-eggs/
 dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
 wheels/
-*.egg-info
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
 
-# Virtual environments
-.venv
-.env
-.env.local
+# Virtual environments & tool caches
+.venv/
+venv/
+ENV/
+env/
 .ruff_cache/
+.pytest_cache/
+.mypy_cache/
+.cache/
+
+# IDEs & local config
 .vscode/
 .idea/
-.env.*.local
+.git/
+.gitignore
+
+# Environment files
+.env
+.env.*
 *.env
-document_rag\memory\memory.db
-document_rag\uploads
-frontend
-document_rag/uploads/*
+
+# Local app storage, databases, and uploaded documents
+frontend/
+document_rag/uploads/
+document_rag/uploads/**
+document_rag/memory/*.db
+document_rag/memory/memory.db
+document_rag/evals/
+document_rag/evals/**
+
+# Heavy model files / vector storage (CRITICAL)
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.onnx
+chroma_db/
+qdrant_storage/
+faiss_index/
+data/

@@ -1,7 +1,7 @@
 import type { ApiError } from '@/lib/types';
 
 const PROD_API_BASE_URL =
-  'https://8000-01m15t4dkp0cb0t3q1vxxg59fz.cloudspaces.litng.ai';
+  'http://13.60.62.142:8000';
 const DEV_API_BASE_URL = '/api';
 
 function resolveBaseURL(): string {
