@@ -14,11 +14,9 @@ function CodeBlock({ children, className }: { children: string; className?: stri
   };
 
   return (
-    <div className="group relative my-4 overflow-hidden rounded-lg border border-ink-200 bg-paper-50">
+    <div className="group relative my-4 overflow-hidden rounded-xl border border-ink-200 bg-paper-50 shadow-depth-1">
       <div className="flex items-center justify-between border-b border-ink-200 bg-paper-100 px-3 py-1.5">
-        <span className="font-mono text-xs text-ink-500">
-          {language || 'code'}
-        </span>
+        <span className="font-mono text-xs text-ink-500">{language || 'code'}</span>
         <button
           onClick={handleCopy}
           className="flex items-center gap-1 rounded px-1.5 py-0.5 text-xs text-ink-500 transition-colors hover:bg-ink-100 hover:text-ink-700"

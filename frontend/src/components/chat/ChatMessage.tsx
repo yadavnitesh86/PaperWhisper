@@ -24,10 +24,10 @@ export const ChatMessage = memo(function ChatMessage({
   if (message.role === 'user') {
     return (
       <div className="flex gap-3 animate-slide-up px-4 py-3">
-        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-ink-100 text-ink-500">
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-ink-100 text-ink-500 shadow-depth-1">
           <User className="h-4 w-4" />
         </div>
-        <div className="flex-1">
+        <div className="flex-1 pt-1">
           <p className="whitespace-pre-wrap text-sm leading-relaxed text-ink-800">
             {message.content}
           </p>
@@ -38,8 +38,8 @@ export const ChatMessage = memo(function ChatMessage({
 
   return (
     <div className="group flex gap-3 animate-slide-up px-4 py-3">
-      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-ink-900 text-paper-50">
-        <svg width="16" height="16" viewBox="0 0 32 32" fill="none">
+      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-ink-900 text-paper-50 shadow-depth-2">
+        <svg width="18" height="18" viewBox="0 0 32 32" fill="none">
           <path
             d="M9 8.5h10l4 4v11a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V9.5a1 1 0 0 1 1-1z"
             stroke="#faf9f5"
@@ -57,7 +57,7 @@ export const ChatMessage = memo(function ChatMessage({
       </div>
       <div className="flex-1 min-w-0">
         {isError ? (
-          <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3">
+          <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 shadow-depth-1">
             <div className="flex items-start gap-2">
               <AlertCircle className="h-4 w-4 text-red-500 shrink-0 mt-0.5" />
               <div className="flex-1">
@@ -67,7 +67,7 @@ export const ChatMessage = memo(function ChatMessage({
                 {onRetry && (
                   <button
                     onClick={onRetry}
-                    className="mt-2 flex items-center gap-1.5 text-xs font-medium text-red-700 hover:text-red-800"
+                    className="mt-2 flex items-center gap-1.5 text-xs font-medium text-red-700 transition-colors hover:text-red-800"
                   >
                     <RotateCcw className="h-3 w-3" />
                     Retry
@@ -82,7 +82,7 @@ export const ChatMessage = memo(function ChatMessage({
             <div className="mt-2 flex items-center gap-2 opacity-0 transition-opacity group-hover:opacity-100">
               <button
                 onClick={handleCopy}
-                className="flex items-center gap-1 rounded px-1.5 py-0.5 text-xs text-ink-400 transition-colors hover:bg-ink-100 hover:text-ink-700"
+                className="flex items-center gap-1 rounded-md px-1.5 py-0.5 text-xs text-ink-400 transition-colors hover:bg-ink-100 hover:text-ink-700"
               >
                 {copied ? (
                   <>

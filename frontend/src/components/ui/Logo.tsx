@@ -35,34 +35,33 @@ export function LogoMark({ size = 32 }: { size?: number }) {
   );
 }
 
-export function LogoWordmark({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
+export function LogoWordmark({
+  size = 'md',
+  to,
+}: {
+  size?: 'sm' | 'md' | 'lg';
+  to?: string;
+}) {
   const sizes = {
     sm: { mark: 24, text: 'text-base' },
     md: { mark: 32, text: 'text-lg' },
-    lg: { mark: 40, text: 'text-2xl' },
+    lg: { mark: 44, text: 'text-2xl' },
   };
   const s = sizes[size];
-  return (
+  const content = (
     <span className="flex items-center gap-2.5">
       <LogoMark size={s.mark} />
-      <span className={`font-semibold tracking-tight text-ink-900 ${s.text}`}>
+      <span className={`font-bold tracking-tight text-ink-900 ${s.text}`}>
         PaperWhisper
       </span>
     </span>
   );
-}
-
-export function LogoLink({ to, size = 'md' }: { to: string; size?: 'sm' | 'md' | 'lg' }) {
-  return (
-    <Link to={to} className="inline-flex items-center gap-2.5 hover:opacity-80 transition-opacity">
-      <LogoMark size={size === 'sm' ? 24 : size === 'md' ? 32 : 40} />
-      <span
-        className={`font-semibold tracking-tight text-ink-900 ${
-          size === 'sm' ? 'text-base' : size === 'md' ? 'text-lg' : 'text-2xl'
-        }`}
-      >
-        PaperWhisper
-      </span>
-    </Link>
-  );
+  if (to) {
+    return (
+      <Link to={to} className="inline-flex transition-opacity hover:opacity-80">
+        {content}
+      </Link>
+    );
+  }
+  return content;
 }

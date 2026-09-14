@@ -21,6 +21,11 @@ export class ErrorBoundary extends Component<Props, State> {
       return (
         <div className="flex min-h-screen items-center justify-center bg-paper-100 p-6">
           <div className="max-w-md text-center">
+            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-red-50 text-red-500 shadow-depth-1">
+              <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
             <h1 className="text-xl font-semibold text-ink-900">
               Something went wrong
             </h1>
@@ -28,10 +33,7 @@ export class ErrorBoundary extends Component<Props, State> {
               An unexpected error occurred. You can try again.
             </p>
             <div className="mt-6">
-              <Button
-                onClick={() => window.location.reload()}
-                variant="primary"
-              >
+              <Button onClick={() => window.location.reload()} variant="primary">
                 Try Again
               </Button>
             </div>

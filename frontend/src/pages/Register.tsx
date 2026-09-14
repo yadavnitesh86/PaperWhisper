@@ -1,11 +1,11 @@
 import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { registerUser } from '@/lib/api/auth';
-import { loginUser } from '@/lib/api/auth';
+import { registerUser, loginUser, parseAuthError } from '@/lib/api/auth';
 import { useAuth } from '@/lib/auth-context';
 import { LogoMark } from '@/components/ui/Logo';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
+import { AlertCircle, Loader2 } from 'lucide-react';
 
 export function Register() {
   const navigate = useNavigate();
@@ -22,26 +22,11 @@ export function Register() {
     setError(null);
     try {
       await registerUser(username.trim(), password);
-      // Auto-login after successful registration
       const user = await loginUser(username.trim(), password);
       setUser(user);
       navigate('/app');
     } catch (err) {
-      const e = err as { status?: number; message?: string; detail?: unknown };
-      if (e.status === 400) {
-        const detail = e.detail as { detail?: string } | undefined;
-        if (detail?.detail === 'REGISTER_USER_ALREADY_EXISTS') {
-          setError('This username is already taken.');
-        } else if (detail?.detail && typeof detail.detail === 'object' && 'reason' in (detail.detail as Record<string, unknown>)) {
-          setError((detail.detail as { reason: string }).reason);
-        } else {
-          setError('This username is already taken.');
-        }
-      } else if (e.status === 422) {
-        setError('Please check the information you entered.');
-      } else {
-        setError(e.message || 'Registration failed. Try again.');
-      }
+      setError(parseAuthError(err, 'register'));
     } finally {
       setLoading(false);
     }
@@ -49,31 +34,43 @@ export function Register() {
 
   return (
     <div className="flex min-h-screen">
-      <div className="hidden flex-1 flex-col justify-between border-r border-ink-200 bg-paper-50 p-12 lg:flex">
-        <Link to="/" className="inline-flex items-center gap-2.5">
+      {/* Left branding panel */}
+      <div className="relative hidden flex-1 flex-col justify-between overflow-hidden border-r border-ink-200 bg-paper-50 p-12 lg:flex">
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage:
+              'radial-gradient(circle at 1px 1px, #1f1d1a 1px, transparent 0)',
+            backgroundSize: '32px 32px',
+          }}
+        />
+        <Link to="/" className="relative inline-flex items-center gap-2.5">
           <LogoMark size={36} />
-          <span className="text-xl font-semibold tracking-tight text-ink-900">
+          <span className="text-xl font-bold tracking-tight text-ink-900">
             PaperWhisper
           </span>
         </Link>
-        <div>
-          <h2 className="text-2xl font-semibold text-ink-900">
-            Start your research workspace.
+        <div className="relative">
+          <h2 className="text-3xl font-bold tracking-tight text-ink-900">
+            Start your research
+            <br />
+            workspace.
           </h2>
-          <p className="mt-3 max-w-sm text-ink-500 leading-relaxed">
+          <p className="mt-4 max-w-sm text-ink-500 leading-relaxed">
             Create an account to upload documents and have grounded AI
             conversations about your research.
           </p>
         </div>
-        <p className="text-xs text-ink-400">Document Intelligence</p>
+        <p className="relative text-xs text-ink-400">Document Intelligence</p>
       </div>
 
-      <div className="flex flex-1 items-center justify-center p-6">
+      {/* Right form panel */}
+      <div className="flex flex-1 items-center justify-center bg-paper-100 p-6">
         <div className="w-full max-w-sm">
           <div className="mb-8 lg:hidden">
             <Link to="/" className="inline-flex items-center gap-2.5">
               <LogoMark size={32} />
-              <span className="text-lg font-semibold tracking-tight text-ink-900">
+              <span className="text-lg font-bold tracking-tight text-ink-900">
                 PaperWhisper
               </span>
             </Link>
@@ -102,15 +99,16 @@ export function Register() {
               name="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Choose a password"
+              placeholder="Choose a password (min 3 characters)"
               autoComplete="new-password"
               required
               minLength={3}
             />
 
             {error && (
-              <div className="rounded-md border border-red-200 bg-red-50 px-3 py-2">
-                <p className="text-sm text-red-700">{error}</p>
+              <div className="flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 px-3.5 py-3 animate-slide-down">
+                <AlertCircle className="h-4 w-4 text-red-500 shrink-0 mt-0.5" />
+                <p className="text-sm text-red-700 leading-snug">{error}</p>
               </div>
             )}
 
@@ -122,7 +120,14 @@ export function Register() {
               loading={loading}
               disabled={!username.trim() || !password}
             >
-              {loading ? 'Creating account...' : 'Create account'}
+              {loading ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Creating account...
+                </>
+              ) : (
+                'Create account'
+              )}
             </Button>
           </form>
 

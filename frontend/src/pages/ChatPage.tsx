@@ -11,7 +11,9 @@ interface ChatPageProps {
 
 export function ChatPage({ onRefreshSidebar }: ChatPageProps) {
   const { threadId } = useParams<{ threadId: string }>();
-  const [conversation, setConversation] = useState<ConversationResponse | null>(null);
+  const [conversation, setConversation] = useState<ConversationResponse | null>(
+    null,
+  );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -50,7 +52,9 @@ export function ChatPage({ onRefreshSidebar }: ChatPageProps) {
     return (
       <div className="flex h-full items-center justify-center p-6">
         <div className="text-center">
-          <p className="text-sm text-ink-500">{error || 'Conversation not found.'}</p>
+          <p className="text-sm text-ink-500">
+            {error || 'Conversation not found.'}
+          </p>
         </div>
       </div>
     );

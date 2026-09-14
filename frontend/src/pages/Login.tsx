@@ -1,10 +1,11 @@
 import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { loginUser } from '@/lib/api/auth';
+import { loginUser, parseAuthError } from '@/lib/api/auth';
 import { useAuth } from '@/lib/auth-context';
 import { LogoMark } from '@/components/ui/Logo';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
+import { AlertCircle, Loader2 } from 'lucide-react';
 
 export function Login() {
   const navigate = useNavigate();
@@ -24,21 +25,7 @@ export function Login() {
       setUser(user);
       navigate('/app');
     } catch (err) {
-      const e = err as { status?: number; message?: string; detail?: unknown };
-      if (e.status === 400) {
-        const detail = e.detail as { detail?: string } | undefined;
-        if (detail?.detail === 'LOGIN_BAD_CREDENTIALS') {
-          setError('Invalid username or password.');
-        } else {
-          setError('Invalid username or password.');
-        }
-      } else if (e.status === 0) {
-        setError(
-          'Cannot reach the PaperWhisper server. Check your connection and try again.',
-        );
-      } else {
-        setError(e.message || 'Sign in failed. Try again.');
-      }
+      setError(parseAuthError(err, 'login'));
     } finally {
       setLoading(false);
     }
@@ -46,31 +33,54 @@ export function Login() {
 
   return (
     <div className="flex min-h-screen">
-      <div className="hidden flex-1 flex-col justify-between border-r border-ink-200 bg-paper-50 p-12 lg:flex">
-        <Link to="/" className="inline-flex items-center gap-2.5">
+      {/* Left branding panel */}
+      <div className="relative hidden flex-1 flex-col justify-between overflow-hidden border-r border-ink-200 bg-paper-50 p-12 lg:flex">
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage:
+              'radial-gradient(circle at 1px 1px, #1f1d1a 1px, transparent 0)',
+            backgroundSize: '32px 32px',
+          }}
+        />
+        <Link to="/" className="relative inline-flex items-center gap-2.5">
           <LogoMark size={36} />
-          <span className="text-xl font-semibold tracking-tight text-ink-900">
+          <span className="text-xl font-bold tracking-tight text-ink-900">
             PaperWhisper
           </span>
         </Link>
-        <div>
-          <h2 className="text-2xl font-semibold text-ink-900">
-            Your documents, one conversation away.
+        <div className="relative">
+          <h2 className="text-3xl font-bold tracking-tight text-ink-900">
+            Your documents,
+            <br />
+            one conversation away.
           </h2>
-          <p className="mt-3 max-w-sm text-ink-500 leading-relaxed">
+          <p className="mt-4 max-w-sm text-ink-500 leading-relaxed">
             Upload documents and ask PaperWhisper questions grounded in your
             knowledge base.
           </p>
+          <div className="mt-8 flex items-center gap-6">
+            <div>
+              <p className="text-2xl font-bold text-ink-900">3</p>
+              <p className="text-xs text-ink-400">Simple steps</p>
+            </div>
+            <div className="h-8 w-px bg-ink-200" />
+            <div>
+              <p className="text-2xl font-bold text-ink-900">100%</p>
+              <p className="text-xs text-ink-400">Your documents</p>
+            </div>
+          </div>
         </div>
-        <p className="text-xs text-ink-400">Document Intelligence</p>
+        <p className="relative text-xs text-ink-400">Document Intelligence</p>
       </div>
 
-      <div className="flex flex-1 items-center justify-center p-6">
+      {/* Right form panel */}
+      <div className="flex flex-1 items-center justify-center bg-paper-100 p-6">
         <div className="w-full max-w-sm">
           <div className="mb-8 lg:hidden">
             <Link to="/" className="inline-flex items-center gap-2.5">
               <LogoMark size={32} />
-              <span className="text-lg font-semibold tracking-tight text-ink-900">
+              <span className="text-lg font-bold tracking-tight text-ink-900">
                 PaperWhisper
               </span>
             </Link>
@@ -103,8 +113,9 @@ export function Login() {
             />
 
             {error && (
-              <div className="rounded-md border border-red-200 bg-red-50 px-3 py-2">
-                <p className="text-sm text-red-700">{error}</p>
+              <div className="flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 px-3.5 py-3 animate-slide-down">
+                <AlertCircle className="h-4 w-4 text-red-500 shrink-0 mt-0.5" />
+                <p className="text-sm text-red-700 leading-snug">{error}</p>
               </div>
             )}
 
@@ -116,7 +127,14 @@ export function Login() {
               loading={loading}
               disabled={!username.trim() || !password}
             >
-              {loading ? 'Signing in...' : 'Sign in'}
+              {loading ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Signing in...
+                </>
+              ) : (
+                'Sign in'
+              )}
             </Button>
           </form>
 

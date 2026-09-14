@@ -1,17 +1,6 @@
 import type { ApiError } from '@/lib/types';
 
-const PROD_API_BASE_URL =
-  'http://13.60.62.142:8000';
-const DEV_API_BASE_URL = '/api';
-
-function resolveBaseURL(): string {
-  if (import.meta.env.DEV) {
-    return DEV_API_BASE_URL;
-  }
-  return PROD_API_BASE_URL;
-}
-
-const API_BASE_URL = resolveBaseURL();
+const API_BASE_URL = 'http://13.60.62.142:8000';
 
 const TOKEN_KEY = 'paperwhisper_token';
 
@@ -25,6 +14,16 @@ export function setToken(token: string): void {
 
 export function clearToken(): void {
   localStorage.removeItem(TOKEN_KEY);
+}
+
+export function extractApiError(
+  err: unknown,
+  fallback: string,
+): ApiError {
+  if (err && typeof err === 'object' && 'status' in err && 'message' in err) {
+    return err as ApiError;
+  }
+  return { status: 0, message: fallback };
 }
 
 function friendlyMessage(status: number): string {
@@ -69,18 +68,14 @@ export async function apiFetch<T>(
   } catch {
     const error: ApiError = {
       status: 0,
-      message: 'Network error. Check your connection and try again.',
+      message:
+        'Cannot reach the PaperWhisper server. The server may be temporarily unavailable or there may be a network issue.',
     };
     throw error;
   }
 
   if (response.status === 401) {
     clearToken();
-    const error: ApiError = {
-      status: 401,
-      message: friendlyMessage(401),
-    };
-    throw error;
   }
 
   if (!response.ok) {

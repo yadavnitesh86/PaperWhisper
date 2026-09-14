@@ -11,13 +11,13 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantClasses: Record<Variant, string> = {
   primary:
-    'bg-ink-900 text-paper-50 hover:bg-ink-800 active:bg-ink-900 border border-ink-900',
+    'bg-ink-900 text-paper-50 hover:bg-ink-800 active:bg-ink-950 border border-ink-900 shadow-depth-1 hover:shadow-depth-2',
   secondary:
-    'bg-white text-ink-800 hover:bg-paper-100 active:bg-paper-200 border border-ink-200',
+    'bg-white text-ink-800 hover:bg-paper-100 active:bg-paper-200 border border-ink-200 shadow-depth-1 hover:shadow-depth-2',
   ghost:
-    'bg-transparent text-ink-700 hover:bg-ink-100 active:bg-ink-100 border border-transparent',
+    'bg-transparent text-ink-700 hover:bg-ink-100 active:bg-ink-200 border border-transparent',
   danger:
-    'bg-white text-red-700 hover:bg-red-50 active:bg-red-100 border border-red-200',
+    'bg-white text-red-700 hover:bg-red-50 active:bg-red-100 border border-red-200 shadow-depth-1 hover:shadow-depth-2',
 };
 
 const sizeClasses: Record<Size, string> = {
@@ -28,22 +28,14 @@ const sizeClasses: Record<Size, string> = {
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
-    {
-      variant = 'primary',
-      size = 'md',
-      loading = false,
-      disabled,
-      children,
-      className = '',
-      ...props
-    },
+    { variant = 'primary', size = 'md', loading = false, disabled, children, className = '', ...props },
     ref,
   ) => {
     return (
       <button
         ref={ref}
         disabled={disabled || loading}
-        className={`inline-flex items-center justify-center gap-2 rounded-md font-medium transition-colors duration-150 disabled:opacity-50 disabled:cursor-not-allowed ${variantClasses[variant]} ${sizeClasses[size]} ${className}`}
+        className={`inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none active:scale-[0.98] ${variantClasses[variant]} ${sizeClasses[size]} ${className}`}
         {...props}
       >
         {loading && (

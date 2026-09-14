@@ -1,6 +1,9 @@
 import { UploadZone } from '@/components/documents/UploadZone';
+import { useAuth } from '@/lib/auth-context';
 
 export function Documents() {
+  const { user } = useAuth();
+
   return (
     <div className="h-full overflow-y-auto">
       <div className="mx-auto max-w-2xl px-6 py-10">
@@ -13,7 +16,7 @@ export function Documents() {
             them so you can ask questions about their content.
           </p>
         </div>
-        <UploadZone />
+        {user && <UploadZone userId={user.id} />}
       </div>
     </div>
   );

@@ -24,10 +24,7 @@ export function setCachedMessages(threadId: string, messages: Message[]): void {
   }
 }
 
-export function appendCachedMessage(
-  threadId: string,
-  message: Message,
-): void {
+export function appendCachedMessage(threadId: string, message: Message): void {
   const messages = getCachedMessages(threadId);
   messages.push(message);
   setCachedMessages(threadId, messages);

@@ -1,10 +1,11 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/lib/auth-context';
 import { clearAllCachedMessages } from '@/lib/message-cache';
 import { clearUploadHistory } from '@/lib/upload-history';
+import { clearAllChatTitles } from '@/lib/chat-titles';
 import { Button } from '@/components/ui/Button';
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
-import { useState } from 'react';
 
 export function Settings() {
   const { user, logout } = useAuth();
@@ -13,7 +14,8 @@ export function Settings() {
 
   const handleLogout = () => {
     clearAllCachedMessages();
-    clearUploadHistory();
+    clearAllChatTitles();
+    if (user) clearUploadHistory(user.id);
     logout();
     navigate('/login');
   };
@@ -29,7 +31,7 @@ export function Settings() {
           <h2 className="text-sm font-semibold uppercase tracking-wider text-ink-400">
             Account
           </h2>
-          <div className="mt-3 rounded-lg border border-ink-200 bg-white">
+          <div className="mt-3 rounded-xl border border-ink-200 bg-white shadow-depth-1">
             <div className="flex items-center justify-between border-b border-ink-100 px-4 py-3">
               <span className="text-sm text-ink-500">Username</span>
               <span className="text-sm font-medium text-ink-900">
@@ -49,7 +51,7 @@ export function Settings() {
           <h2 className="text-sm font-semibold uppercase tracking-wider text-ink-400">
             Authentication
           </h2>
-          <div className="mt-3 rounded-lg border border-ink-200 bg-white p-4">
+          <div className="mt-3 rounded-xl border border-ink-200 bg-white p-4 shadow-depth-1">
             <p className="text-sm text-ink-500">
               Sign out of your account on this device.
             </p>

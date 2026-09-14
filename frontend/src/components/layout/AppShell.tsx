@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import type { ConversationResponse } from '@/lib/types';
 import { listChats } from '@/lib/api/chats';
 import { useAuth } from '@/lib/auth-context';
+import { clearAllChatTitles } from '@/lib/chat-titles';
 import { Sidebar, SidebarToggle } from './Sidebar';
 import { UserMenu } from './UserMenu';
 
@@ -35,13 +36,14 @@ export function AppShell({ children, refreshKey = 0 }: AppShellProps) {
   }, [refreshConversations, refreshKey]);
 
   const handleLogout = () => {
+    clearAllChatTitles();
     logout();
     navigate('/login');
   };
 
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-paper-100">
-      <header className="flex items-center justify-between border-b border-ink-200 bg-paper-50 px-4 py-2.5">
+      <header className="flex items-center justify-between border-b border-ink-200 bg-paper-50 px-4 py-2.5 shadow-depth-1">
         <div className="flex items-center gap-2">
           <SidebarToggle onClick={() => setSidebarOpen(true)} />
         </div>

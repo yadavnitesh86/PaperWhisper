@@ -35,11 +35,46 @@ export async function getCurrentUser(): Promise<UserRead> {
   return apiFetch<UserRead>('/auth/me', { method: 'GET' });
 }
 
-export function isApiError(err: unknown): err is ApiError {
-  return (
-    typeof err === 'object' &&
-    err !== null &&
-    'status' in err &&
-    'message' in err
-  );
+export function parseAuthError(err: unknown, context: 'login' | 'register'): string {
+  const apiErr = err as ApiError;
+
+  if (apiErr.status === 0) {
+    return apiErr.message;
+  }
+
+  if (apiErr.status === 400) {
+    const detail = apiErr.detail as { detail?: unknown } | undefined;
+    const detailValue = detail?.detail;
+
+    if (context === 'login') {
+      if (detailValue === 'LOGIN_BAD_CREDENTIALS') {
+        return 'Invalid username or password. Please check your credentials and try again.';
+      }
+      return 'Authentication failed. Please check your credentials.';
+    }
+
+    if (context === 'register') {
+      if (detailValue === 'REGISTER_USER_ALREADY_EXISTS') {
+        return 'This username is already taken. Please choose a different one.';
+      }
+      if (detailValue && typeof detailValue === 'object' && 'reason' in (detailValue as Record<string, unknown>)) {
+        return (detailValue as { reason: string }).reason;
+      }
+      return 'Registration failed. Please check your information.';
+    }
+  }
+
+  if (apiErr.status === 422) {
+    const detail = apiErr.detail as { detail?: Array<{ msg: string; loc: (string | number)[] }> } | undefined;
+    if (detail?.detail && Array.isArray(detail.detail) && detail.detail.length > 0) {
+      const messages = detail.detail.map((d) => {
+        const field = d.loc?.filter((l) => l !== 'body').join('.');
+        return field ? `${field}: ${d.msg}` : d.msg;
+      });
+      return messages.join('; ');
+    }
+    return 'Please check the information you entered.';
+  }
+
+  return apiErr.message;
 }

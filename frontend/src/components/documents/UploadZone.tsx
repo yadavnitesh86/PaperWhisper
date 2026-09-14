@@ -1,26 +1,48 @@
 import { useCallback, useRef, useState } from 'react';
-import { UploadCloud, FileText, CheckCircle, AlertCircle, Loader2, X } from 'lucide-react';
+import {
+  UploadCloud,
+  FileText,
+  CheckCircle,
+  AlertCircle,
+  Loader2,
+} from 'lucide-react';
 import type { UploadResponse } from '@/lib/types';
 import { uploadDocument } from '@/lib/api/documents';
-import { addUploadHistory, type UploadHistoryItem } from '@/lib/upload-history';
+import {
+  addUploadHistory,
+  type UploadHistoryItem,
+  getUploadHistory,
+} from '@/lib/upload-history';
 import { useToast } from '@/components/ui/Toast';
 import { Button } from '@/components/ui/Button';
 
 type UploadState = 'idle' | 'uploading' | 'success' | 'error';
 
 interface UploadZoneProps {
+  userId: string;
   onUploaded?: () => void;
 }
 
-export function UploadZone({ onUploaded }: UploadZoneProps) {
+export function UploadZone({ userId, onUploaded }: UploadZoneProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [uploadState, setUploadState] = useState<UploadState>('idle');
   const [uploadResult, setUploadResult] = useState<UploadResponse | null>(null);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [currentFile, setCurrentFile] = useState<File | null>(null);
-  const [recentUploads, setRecentUploads] = useState<UploadHistoryItem[]>([]);
+  const [recentUploads, setRecentUploads] = useState<UploadHistoryItem[]>(
+    () => getUploadHistory(userId),
+  );
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+
+  // Reset upload state when user changes
+  useCallback(() => {
+    setRecentUploads(getUploadHistory(userId));
+    setUploadState('idle');
+    setUploadResult(null);
+    setUploadError(null);
+    setCurrentFile(null);
+  }, [userId]);
 
   const handleFile = useCallback(
     async (file: File) => {
@@ -33,7 +55,7 @@ export function UploadZone({ onUploaded }: UploadZoneProps) {
         const result = await uploadDocument(file);
         setUploadState('success');
         setUploadResult(result);
-        const historyItem = addUploadHistory(result);
+        const historyItem = addUploadHistory(userId, result);
         setRecentUploads((prev) => [historyItem, ...prev]);
         toast(`${result.filename} uploaded successfully`, 'success');
         onUploaded?.();
@@ -47,7 +69,7 @@ export function UploadZone({ onUploaded }: UploadZoneProps) {
         toast('Upload failed', 'error');
       }
     },
-    [toast, onUploaded],
+    [userId, toast, onUploaded],
   );
 
   const handleDrop = useCallback(
@@ -89,10 +111,10 @@ export function UploadZone({ onUploaded }: UploadZoneProps) {
         onDrop={handleDrop}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
-        className={`relative rounded-xl border-2 border-dashed p-8 text-center transition-colors ${
+        className={`relative rounded-xl border-2 border-dashed p-8 text-center transition-all duration-200 ${
           isDragging
-            ? 'border-accent-500 bg-accent-50'
-            : 'border-ink-200 bg-white hover:border-ink-300'
+            ? 'border-accent-500 bg-accent-50 scale-[1.01]'
+            : 'border-ink-200 bg-white hover:border-ink-300 hover:shadow-depth-1'
         }`}
       >
         <input
@@ -105,8 +127,8 @@ export function UploadZone({ onUploaded }: UploadZoneProps) {
 
         {uploadState === 'idle' && (
           <>
-            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-paper-200 text-ink-400">
-              <UploadCloud className="h-6 w-6" />
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-paper-200 text-ink-400 shadow-depth-1 transition-transform hover:scale-105">
+              <UploadCloud className="h-7 w-7" />
             </div>
             <p className="text-sm font-medium text-ink-800">
               Drop a document here
@@ -140,9 +162,9 @@ export function UploadZone({ onUploaded }: UploadZoneProps) {
         )}
 
         {uploadState === 'success' && uploadResult && (
-          <div className="py-2">
-            <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-green-50 text-green-600">
-              <CheckCircle className="h-5 w-5" />
+          <div className="py-2 animate-scale-in">
+            <div className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-green-50 text-green-600 shadow-depth-1">
+              <CheckCircle className="h-6 w-6" />
             </div>
             <p className="text-sm font-medium text-ink-900">Document uploaded</p>
             <p className="mt-1 truncate text-sm text-ink-600">
@@ -152,7 +174,7 @@ export function UploadZone({ onUploaded }: UploadZoneProps) {
               <span className="font-semibold">{uploadResult.ingested_chunks}</span> chunks indexed
             </p>
             {uploadResult.failed_files.length > 0 && (
-              <div className="mt-3 flex items-center gap-2 rounded-md border border-amber-200 bg-amber-50 px-3 py-2">
+              <div className="mt-3 flex items-center gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2">
                 <AlertCircle className="h-4 w-4 text-amber-600 shrink-0" />
                 <p className="text-xs text-amber-700">
                   {uploadResult.failed_files.length} file(s) failed to process
@@ -163,7 +185,7 @@ export function UploadZone({ onUploaded }: UploadZoneProps) {
               <span className="text-xs text-ink-400">Ready for questions</span>
               <button
                 onClick={reset}
-                className="text-xs text-accent-700 hover:text-accent-800"
+                className="text-xs text-accent-700 transition-colors hover:text-accent-800"
               >
                 Upload another
               </button>
@@ -172,9 +194,9 @@ export function UploadZone({ onUploaded }: UploadZoneProps) {
         )}
 
         {uploadState === 'error' && (
-          <div className="py-2">
-            <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-red-50 text-red-600">
-              <AlertCircle className="h-5 w-5" />
+          <div className="py-2 animate-scale-in">
+            <div className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-red-50 text-red-600 shadow-depth-1">
+              <AlertCircle className="h-6 w-6" />
             </div>
             <p className="text-sm font-medium text-ink-900">Upload failed</p>
             <p className="mt-1 truncate text-xs text-ink-500">
@@ -197,14 +219,14 @@ export function UploadZone({ onUploaded }: UploadZoneProps) {
 
       {recentUploads.length > 0 && (
         <div>
-          <p className="mb-2 text-xs font-medium uppercase tracking-wider text-ink-400">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-ink-400">
             Recent uploads (this session)
           </p>
           <ul className="space-y-1.5">
             {recentUploads.map((item) => (
               <li
                 key={item.id}
-                className="flex items-center gap-3 rounded-md border border-ink-200 bg-white px-3 py-2 animate-slide-up"
+                className="flex items-center gap-3 rounded-lg border border-ink-200 bg-white px-3 py-2.5 shadow-depth-1 animate-slide-up"
               >
                 <FileText className="h-4 w-4 shrink-0 text-ink-400" />
                 <div className="flex-1 min-w-0">

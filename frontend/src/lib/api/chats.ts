@@ -13,9 +13,7 @@ export async function listChats(): Promise<ConversationResponse[]> {
   return apiFetch<ConversationResponse[]>('/chats', { method: 'GET' });
 }
 
-export async function getChat(
-  threadId: string,
-): Promise<ConversationResponse> {
+export async function getChat(threadId: string): Promise<ConversationResponse> {
   return apiFetch<ConversationResponse>(`/chats/${threadId}`, {
     method: 'GET',
   });

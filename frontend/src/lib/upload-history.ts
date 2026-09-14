@@ -8,11 +8,15 @@ export interface UploadHistoryItem {
   uploaded_at: string;
 }
 
-const HISTORY_KEY = 'pw_upload_history';
+const HISTORY_PREFIX = 'pw_upload_history_';
 
-export function getUploadHistory(): UploadHistoryItem[] {
+function historyKey(userId: string): string {
+  return `${HISTORY_PREFIX}${userId}`;
+}
+
+export function getUploadHistory(userId: string): UploadHistoryItem[] {
   try {
-    const raw = localStorage.getItem(HISTORY_KEY);
+    const raw = localStorage.getItem(historyKey(userId));
     if (!raw) return [];
     return JSON.parse(raw) as UploadHistoryItem[];
   } catch {
@@ -21,6 +25,7 @@ export function getUploadHistory(): UploadHistoryItem[] {
 }
 
 export function addUploadHistory(
+  userId: string,
   response: UploadResponse,
 ): UploadHistoryItem {
   const item: UploadHistoryItem = {
@@ -30,12 +35,12 @@ export function addUploadHistory(
     failed_files: response.failed_files,
     uploaded_at: new Date().toISOString(),
   };
-  const history = getUploadHistory();
+  const history = getUploadHistory(userId);
   history.unshift(item);
-  localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+  localStorage.setItem(historyKey(userId), JSON.stringify(history));
   return item;
 }
 
-export function clearUploadHistory(): void {
-  localStorage.removeItem(HISTORY_KEY);
+export function clearUploadHistory(userId: string): void {
+  localStorage.removeItem(historyKey(userId));
 }

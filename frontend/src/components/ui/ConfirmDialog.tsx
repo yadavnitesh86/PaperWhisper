@@ -49,17 +49,15 @@ export function ConfirmDialog({
       aria-labelledby="confirm-title"
     >
       <div
-        className="absolute inset-0 bg-ink-900/30 animate-fade-in"
+        className="absolute inset-0 bg-ink-900/30 backdrop-blur-sm animate-fade-in"
         onClick={onCancel}
       />
-      <div className="relative z-10 w-full max-w-md rounded-xl border border-ink-200 bg-white p-6 shadow-lg animate-scale-in">
+      <div className="relative z-10 w-full max-w-md rounded-xl border border-ink-200 bg-white p-6 shadow-depth-4 animate-scale-in">
         <h2 id="confirm-title" className="text-lg font-semibold text-ink-900">
           {title}
         </h2>
         {description && (
-          <p className="mt-2 text-sm text-ink-500 leading-relaxed">
-            {description}
-          </p>
+          <p className="mt-2 text-sm text-ink-500 leading-relaxed">{description}</p>
         )}
         {children}
         <div className="mt-6 flex justify-end gap-3">

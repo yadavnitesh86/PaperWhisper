@@ -1,5 +1,4 @@
-import { apiFetch, getToken } from './client';
-import { API_BASE_URL } from './client';
+import { getToken, API_BASE_URL } from './client';
 import type { UploadResponse } from '@/lib/types';
 
 export async function uploadDocument(file: File): Promise<UploadResponse> {
@@ -19,9 +18,19 @@ export async function uploadDocument(file: File): Promise<UploadResponse> {
   });
 
   if (!response.ok) {
+    let detail: unknown = undefined;
+    try {
+      detail = await response.json();
+    } catch {
+      // body not JSON
+    }
     throw {
       status: response.status,
-      message: response.status === 422 ? 'Please choose a valid file.' : 'Upload failed. Try again.',
+      message:
+        response.status === 422
+          ? 'Please choose a valid document file.'
+          : 'Upload failed. Try again.',
+      detail,
     };
   }
 

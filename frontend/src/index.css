@@ -6,6 +6,7 @@
   html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
   }
   body {
     @apply bg-paper-100 text-ink-900 font-sans;
@@ -70,9 +71,11 @@
   .prose-chat pre {
     @apply my-4;
   }
+  .skeleton {
+    @apply bg-gradient-to-r from-ink-100 via-ink-50 to-ink-100 bg-[length:200%_100%] animate-shimmer;
+  }
 }
 
-/* Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -86,4 +89,9 @@
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #9f9b8f;
+}
+
+[data-tilt] {
+  transform-style: preserve-3d;
+  transition: transform 0.2s ease-out;
 }

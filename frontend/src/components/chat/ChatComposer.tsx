@@ -43,7 +43,7 @@ export function ChatComposer({
   return (
     <div className="border-t border-ink-200 bg-paper-50 px-4 py-3">
       <div className="mx-auto max-w-3xl">
-        <div className="flex items-end gap-2 rounded-lg border border-ink-200 bg-white p-2 focus-within:border-accent-500 focus-within:ring-1 focus-within:ring-accent-500">
+        <div className="flex items-end gap-2 rounded-xl border border-ink-200 bg-white p-2 shadow-depth-2 transition-all focus-within:border-accent-500 focus-within:shadow-depth-3">
           <textarea
             ref={textareaRef}
             value={value}
@@ -59,7 +59,7 @@ export function ChatComposer({
           <button
             onClick={handleSend}
             disabled={!value.trim() || disabled}
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-ink-900 text-paper-50 transition-colors hover:bg-ink-800 disabled:opacity-40 disabled:cursor-not-allowed"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-ink-900 text-paper-50 transition-all hover:bg-ink-800 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100"
             aria-label="Send message"
           >
             <Send className="h-4 w-4" />

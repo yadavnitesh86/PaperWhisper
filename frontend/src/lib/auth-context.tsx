@@ -13,7 +13,6 @@ import { clearToken, getToken } from '@/lib/api/client';
 interface AuthContextValue {
   user: UserRead | null;
   loading: boolean;
-  error: string | null;
   setUser: (user: UserRead | null) => void;
   logout: () => void;
 }
@@ -23,7 +22,6 @@ const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<UserRead | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const token = getToken();
@@ -46,9 +44,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <AuthContext.Provider
-      value={{ user, loading, error, setUser, logout }}
-    >
+    <AuthContext.Provider value={{ user, loading, setUser, logout }}>
       {children}
     </AuthContext.Provider>
   );
