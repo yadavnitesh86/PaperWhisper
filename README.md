@@ -55,6 +55,15 @@ flowchart TD
 | **Memory** | Conversation state persisted per `thread_id` via `AsyncSqliteSaver` (LangGraph checkpointer), separate from the app's relational data |
 | **Evaluation** | RAGAS `Faithfulness`, `LLMContextRecall`, `LLMContextPrecisionWithReference` scored against a hand-built `ragas_test_dataset.json` |
 
+### Evaluation Results (100 test cases)
+
+| Metric | Score |
+|---|---|
+| Faithfulness | 78% |
+| Context Precision | 85% |
+| LLM Context Recall | 88% |
+
+
 ## Tech Stack
 
 - **Backend**: FastAPI, Uvicorn, Pydantic, SQLAlchemy (async) + aiosqlite
@@ -180,7 +189,7 @@ uv run python document_rag/evals/rag_eval.py
 - **Durable agent memory**: LangGraph SQLite checkpointing persists conversation state independently of the relational app DB, with explicit dual cleanup on conversation deletion
 - **Bounded agent execution**: `SummarizationMiddleware` compresses long histories on a token trigger; `ToolCallLimitMiddleware` caps tool calls per run/thread to control cost and runaway loops
 - **Provider-agnostic LLM layer**: swapping between OpenAI-compatible, Anthropic, and Groq backends is a config/env change, not a code change
-- **Automated, metric-based evaluation**: RAGAS faithfulness/precision/recall scoring against a fixed dataset, rather than manual spot-checking
+- **Automated, metric-based evaluation**: RAGAS faithfulness/precision/recall scoring against a fixed 100-case dataset (78% faithfulness, 85% context precision, 88% context recall), rather than manual spot-checking
 - **CI-verified retrieval + agent path**: GitHub Actions runs a live integration test against the actual agent and retriever on every push
 - **Traceable pipeline**: Logfire spans instrument ingestion and retrieval for debugging and observability
 
