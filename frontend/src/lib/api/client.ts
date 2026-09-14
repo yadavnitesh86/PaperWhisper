@@ -1,6 +1,6 @@
 import type { ApiError } from '@/lib/types';
 
-const API_BASE_URL = 'http://13.60.62.142:8000';
+const API_BASE_URL = '/api';
 
 const TOKEN_KEY = 'paperwhisper_token';
 
