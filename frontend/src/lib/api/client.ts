@@ -3,8 +3,8 @@ import type { ApiError } from '@/lib/types';
 const API_BASE_URL = '/api';
 const TOKEN_KEY = 'paperwhisper_token';
 
-const DEFAULT_TIMEOUT_MS = 90_000;
-const CHAT_TIMEOUT_MS = 90_000;
+const DEFAULT_TIMEOUT_MS = 180_000;
+const CHAT_TIMEOUT_MS = 180_000;
 
 export function getToken(): string | null {
   return localStorage.getItem(TOKEN_KEY);
