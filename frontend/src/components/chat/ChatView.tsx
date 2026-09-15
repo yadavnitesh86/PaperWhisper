@@ -33,6 +33,7 @@ export function ChatView({ threadId, title, onRefreshSidebar }: ChatViewProps) {
   const [errorRetry, setErrorRetry] = useState<string | null>(null);
   const [displayTitle, setDisplayTitle] = useState(title);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const abortRef = useRef<AbortController | null>(null);
 
   useEffect(() => {
     const cached = getCachedMessages(threadId);
@@ -46,8 +47,18 @@ export function ChatView({ threadId, title, onRefreshSidebar }: ChatViewProps) {
     }
   }, [messages, thinking]);
 
+  useEffect(() => {
+    return () => {
+      abortRef.current?.abort();
+    };
+  }, []);
+
   const handleSend = useCallback(
     async (content: string) => {
+      abortRef.current?.abort();
+      const controller = new AbortController();
+      abortRef.current = controller;
+
       const userMessage: Message = {
         id: crypto.randomUUID(),
         role: 'user',
@@ -58,7 +69,6 @@ export function ChatView({ threadId, title, onRefreshSidebar }: ChatViewProps) {
       setMessages((prev) => [...prev, userMessage]);
       appendCachedMessage(threadId, userMessage);
 
-      // If this is the first message, update the displayed title
       const isFirstMessage = messages.length === 0;
       if (isFirstMessage) {
         const newTitle = truncateTitle(content);
@@ -70,6 +80,8 @@ export function ChatView({ threadId, title, onRefreshSidebar }: ChatViewProps) {
 
       try {
         const response = await sendMessage(threadId, content);
+        if (controller.signal.aborted) return;
+
         const assistantMessage: Message = {
           id: crypto.randomUUID(),
           role: 'assistant',
@@ -78,13 +90,26 @@ export function ChatView({ threadId, title, onRefreshSidebar }: ChatViewProps) {
         };
         setMessages((prev) => [...prev, assistantMessage]);
         appendCachedMessage(threadId, assistantMessage);
-        // Refresh sidebar to pick up any title changes from the backend
         onRefreshSidebar();
       } catch (err) {
-        const errorMsg =
-          err && typeof err === 'object' && 'message' in err
-            ? (err as { message: string }).message
-            : 'Failed to get a response. Try again.';
+        if (controller.signal.aborted) return;
+
+        const apiErr = err as { status?: number; message?: string; isTimeout?: boolean };
+        let errorMsg: string;
+
+        if (apiErr.isTimeout) {
+          errorMsg = 'PaperWhisper is taking longer than expected. Please try again.';
+        } else if (apiErr.status === 0) {
+          errorMsg =
+            'Unable to reach PaperWhisper right now. Please check your connection and try again.';
+        } else if (apiErr.status && apiErr.status >= 500) {
+          errorMsg = apiErr.message || 'PaperWhisper ran into a temporary server problem. Please try again shortly.';
+        } else if (apiErr.status && apiErr.status >= 400) {
+          errorMsg = apiErr.message || 'Failed to get a response. Try again.';
+        } else {
+          errorMsg = apiErr.message || 'Failed to get a response. Try again.';
+        }
+
         const errorMessage: Message = {
           id: crypto.randomUUID(),
           role: 'assistant',
@@ -95,7 +120,9 @@ export function ChatView({ threadId, title, onRefreshSidebar }: ChatViewProps) {
         appendCachedMessage(threadId, errorMessage);
         setErrorRetry(content);
       } finally {
-        setThinking(false);
+        if (!controller.signal.aborted) {
+          setThinking(false);
+        }
       }
     },
     [threadId, messages.length, onRefreshSidebar],

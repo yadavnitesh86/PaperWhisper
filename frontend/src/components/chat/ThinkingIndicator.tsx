@@ -1,8 +1,37 @@
+import { useEffect, useState } from 'react';
+
+const WAITING_MESSAGES = [
+  'PaperWhisper is digging through the papers...',
+  'Searching the knowledge base... no coffee break yet',
+  'Connecting the dots...',
+  'Reading the fine print...',
+  'Consulting the documents...',
+  'Doing some serious document detective work...',
+  'The answer is hiding somewhere in those pages...',
+  'Almost there... PaperWhisper is doing the nerdy part.',
+  'Crunching the documents...',
+  'Cross-checking the evidence...',
+  'The PDFs are being questioned.',
+  'Still working on it... good answers sometimes take a moment.',
+  'PaperWhisper is assembling the answer...',
+];
+
+const ROTATION_INTERVAL = 3500;
+
 export function ThinkingIndicator() {
+  const [messageIndex, setMessageIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setMessageIndex((prev) => (prev + 1) % WAITING_MESSAGES.length);
+    }, ROTATION_INTERVAL);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="flex gap-3 animate-fade-in px-4 py-3">
       <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-ink-900 text-paper-50 shadow-depth-2">
-        <svg width="18" height="18" viewBox="0 0 32 32" fill="none">
+        <svg width="18" height="18" viewBox="0 0 32 32" fill="none" className="animate-spin-slow">
           <path
             d="M9 8.5h10l4 4v11a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V9.5a1 1 0 0 1 1-1z"
             stroke="#faf9f5"
@@ -19,7 +48,12 @@ export function ThinkingIndicator() {
         </svg>
       </div>
       <div className="flex items-center gap-2 py-2">
-        <span className="text-sm text-ink-500">PaperWhisper is thinking</span>
+        <span
+          key={messageIndex}
+          className="text-sm text-ink-500 animate-fade-in"
+        >
+          {WAITING_MESSAGES[messageIndex]}
+        </span>
         <span className="flex gap-1">
           <span
             className="h-2 w-2 rounded-full bg-accent-500 animate-bounce-dot"

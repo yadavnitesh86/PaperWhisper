@@ -1,4 +1,4 @@
-import { apiFetch } from './client';
+import { apiFetch, CHAT_TIMEOUT_MS } from './client';
 import type {
   ChatResponse,
   ConversationResponse,
@@ -31,5 +31,6 @@ export async function sendMessage(
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ message }),
+    timeoutMs: CHAT_TIMEOUT_MS,
   });
 }

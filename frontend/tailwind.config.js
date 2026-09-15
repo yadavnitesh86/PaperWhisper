@@ -103,6 +103,10 @@ export default {
           '0%, 80%, 100%': { transform: 'scale(0.6)', opacity: '0.4' },
           '40%': { transform: 'scale(1)', opacity: '1' },
         },
+        'spin-slow': {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(360deg)' },
+        },
       },
       animation: {
         'fade-in': 'fade-in 0.3s ease-out',
@@ -114,6 +118,7 @@ export default {
         'shimmer': 'shimmer 2s linear infinite',
         'pulse-soft': 'pulse-soft 1.5s ease-in-out infinite',
         'bounce-dot': 'bounce-dot 1.4s ease-in-out infinite both',
+        'spin-slow': 'spin-slow 2.5s linear infinite',
       },
     },
   },

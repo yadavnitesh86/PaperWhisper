@@ -1,8 +1,11 @@
 import type { ApiError } from '@/lib/types';
 
-const API_BASE_URL = '/api';
+const API_BASE_URL = 'http://13.60.62.142:8000';
 
 const TOKEN_KEY = 'paperwhisper_token';
+
+const DEFAULT_TIMEOUT_MS = 30_000;
+const CHAT_TIMEOUT_MS = 90_000;
 
 export function getToken(): string | null {
   return localStorage.getItem(TOKEN_KEY);
@@ -26,7 +29,35 @@ export function extractApiError(
   return { status: 0, message: fallback };
 }
 
-function friendlyMessage(status: number): string {
+function isAbortError(err: unknown): boolean {
+  return (
+    err instanceof DOMException &&
+    (err.name === 'AbortError' || err.name === 'TimeoutError')
+  );
+}
+
+function looksLikeModelProviderError(detail: unknown): boolean {
+  if (!detail) return false;
+  const text = JSON.stringify(detail).toLowerCase();
+  return (
+    text.includes('openaipermissiondeniederror') ||
+    text.includes('openai') &&
+      (text.includes('permission') || text.includes('denied')) ||
+    text.includes('model') &&
+      (text.includes('unavailable') || text.includes('permission')) ||
+    text.includes('api_key') ||
+    text.includes('provider') &&
+      (text.includes('unavailable') || text.includes('error'))
+  );
+}
+
+function friendlyMessage(status: number, detail?: unknown): string {
+  if (status >= 500 && status <= 599) {
+    if (looksLikeModelProviderError(detail)) {
+      return "PaperWhisper's AI model is temporarily unavailable. Please try again later.";
+    }
+    return 'PaperWhisper ran into a temporary server problem. Please try again shortly.';
+  }
   switch (status) {
     case 400:
       return 'The request could not be processed. Please check and try again.';
@@ -40,20 +71,18 @@ function friendlyMessage(status: number): string {
       return 'Please check the information you entered.';
     case 429:
       return 'Too many requests. Please wait a moment and try again.';
-    case 500:
-      return "PaperWhisper couldn't complete that request. Try again.";
-    case 502:
-    case 503:
-    case 504:
-      return 'The server is temporarily unavailable. Try again shortly.';
     default:
       return 'Something went wrong. Please try again.';
   }
 }
 
+export interface ApiFetchOptions extends RequestInit {
+  timeoutMs?: number;
+}
+
 export async function apiFetch<T>(
   path: string,
-  options: RequestInit = {},
+  options: ApiFetchOptions = {},
 ): Promise<T> {
   const url = `${API_BASE_URL}${path}`;
   const headers = new Headers(options.headers);
@@ -62,16 +91,32 @@ export async function apiFetch<T>(
     headers.set('Authorization', `Bearer ${token}`);
   }
 
+  const timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS;
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
   let response: Response;
   try {
-    response = await fetch(url, { ...options, headers });
-  } catch {
-    const error: ApiError = {
+    response = await fetch(url, {
+      ...options,
+      headers,
+      signal: options.signal ?? controller.signal,
+    });
+  } catch (err) {
+    if (isAbortError(err)) {
+      throw {
+        status: 0,
+        message: 'PaperWhisper is taking longer than expected. Please try again.',
+        isTimeout: true,
+      } as ApiError & { isTimeout: boolean };
+    }
+    throw {
       status: 0,
       message:
-        'Cannot reach the PaperWhisper server. The server may be temporarily unavailable or there may be a network issue.',
-    };
-    throw error;
+        'Unable to reach PaperWhisper right now. Please check your connection and try again.',
+    } as ApiError;
+  } finally {
+    clearTimeout(timeoutId);
   }
 
   if (response.status === 401) {
@@ -87,7 +132,7 @@ export async function apiFetch<T>(
     }
     const error: ApiError = {
       status: response.status,
-      message: friendlyMessage(response.status),
+      message: friendlyMessage(response.status, detail),
       detail,
     };
     throw error;
@@ -100,4 +145,4 @@ export async function apiFetch<T>(
   return response.json() as Promise<T>;
 }
 
-export { API_BASE_URL };
+export { API_BASE_URL, CHAT_TIMEOUT_MS };
