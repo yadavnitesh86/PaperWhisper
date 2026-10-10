@@ -65,3 +65,5 @@ frontend/.env
 frontend/.env.*
 
 .clinerules/*
+brag-output/*
+document_rag/memory/*

@@ -1,4 +1,4 @@
-from langchain_huggingface import HuggingFaceEndpointEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 from document_rag.config.config import load_config
 from dotenv import load_dotenv
 import logfire
@@ -13,12 +13,9 @@ config = load_config()
 HF_TOKEN = os.getenv("HF_TOKEN")
 
 def get_dense_ef():
-    return HuggingFaceEndpointEmbeddings(
-        model="sentence-transformers/all-MiniLM-L6-v2",
-        provider="hf-inference",
+    return HuggingFaceEmbeddings(
+        model_name="sentence-transformers/all-MiniLM-L6-v2",
     )
-    return embeddings
-
 
 def get_llm():
 

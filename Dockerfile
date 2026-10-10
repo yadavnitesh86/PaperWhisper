@@ -18,8 +18,10 @@ RUN uv sync --frozen --no-install-project --no-dev --no-cache
 
 # Pre-download FlashRank model so it never downloads at runtime
 RUN uv run python -c "from flashrank import Ranker; Ranker(model_name='ms-marco-MiniLM-L-12-v2')"
+RUN uv run python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')"
 
 # Copy project source code
+
 COPY . .
 
 # Install the project itself
